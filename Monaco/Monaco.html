@@ -2465,7 +2465,7 @@ function loadTabs() {
         }
 
         function addTab(title, content = '', id = null) {
-    const defaultText = "print('Good Evening Earth! ☕')";    
+    const defaultText = "print('Good Evening World! ☕')";    
     if (!content) {
         content = defaultText;
     }
@@ -2528,7 +2528,7 @@ function switchTab(tabId) {
             }
         }
         
-        const contentToSet = tab.content.trim() === '' ? "--[[ Made by Salad\n    discord.gg/getsalad\n ]]" : tab.content;        editor.setValue(contentToSet);
+        const contentToSet = tab.content.trim() === '' ? "print('Good Evening World! ☕')" : tab.content;        editor.setValue(contentToSet);
         tab.element.classList.add('active');
         currentTab = tabId;
     }
@@ -2578,39 +2578,53 @@ function setupAutosave() {
 
 			
 			monaco.editor.defineTheme('net-theme-dark', {
-				base: 'vs-dark',
-				inherit: true,
-				colors: {
-					"editor.background": '#141414', //ur background color
-				},
-				rules: [{
-						token: 'global',
-						foreground: '6699cc', // //FFFFFF
-						fontStyle: "bold"
-					},
-					{
-						token: 'keyword',
-						foreground: 'cc99cc',
-						fontStyle: "bold"
-					},
-					{
-						token: 'comment',
-						foreground: '999999'
-					},
-					{
-						token: 'number',
-						foreground: 'f99157'
-					},
-					{
-						token: 'string',
-						foreground: '99CC99'
-					},
-					{
-						token: 'Method',
-						foreground: 'ffa1dc'
-					},
-				]
+			    base: 'vs-dark',
+			    inherit: true,
+			    colors: {
+			        "editor.background": '#141414'
+			    },
+			    rules: [
+			        {
+			            token: 'keyword',
+			            foreground: 'cc99cc',
+			            fontStyle: 'bold'
+			        },
+			        {
+			            token: 'comment',
+			            foreground: '999999'
+			        },
+			        {
+			            token: 'number',
+			            foreground: 'f99157'
+			        },
+			        {
+			            token: 'string',
+			            foreground: '99cc99'
+			        },
+			        {
+			            token: 'variable.parameter',
+			            foreground: '6699cc'
+			        },
+			        {
+			            token: 'variable',
+			            foreground: '6699cc'
+			        },
+			        {
+			            token: 'type',
+			            foreground: 'ffa1dc'
+			        },
+			        {
+			            token: 'function',
+			            foreground: 'ffa1dc'
+			        },
+			        {
+			            token: 'class',
+			            foreground: 'ffa1dc',
+			            fontStyle: 'bold'
+			        }
+			    ]
 			});
+
 
 			editor = monaco.editor.create(document.getElementById('container'), {
 				language: 'lua',
@@ -2838,4 +2852,5 @@ function setupAutosave() {
 </body>
 
 </html>
+
 
