@@ -3,8 +3,8 @@
     {
       "ThemeManufacturer": "Exploit",
       "Color1": "#2986cc",
-      "TextboxImage": ""
+      "TextboxImage": "https://orca-executor.vercel.app/Orca.png"
     }
   ]
-
 }
+
