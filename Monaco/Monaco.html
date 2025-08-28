@@ -2581,9 +2581,14 @@ function setupAutosave() {
 			    base: 'vs-dark',
 			    inherit: true,
 			    colors: {
-			        "editor.background": '#141414'
+			        "editor.background": '#141414',
+			        "editor.foreground": '#ffffff'
 			    },
 			    rules: [
+			        {
+			            token: '',
+			            foreground: 'ffffff'
+			        },
 			        {
 			            token: 'keyword',
 			            foreground: 'c586c0'
@@ -2610,7 +2615,7 @@ function setupAutosave() {
 			        },
 			        {
 			            token: 'identifier',
-			            foreground: '9cdcfe'
+			            foreground: 'ffffff'
 			        },
 			        {
 			            token: 'type',
@@ -2631,7 +2636,8 @@ function setupAutosave() {
 			        }
 			    ]
 			});
-
+			
+			
 
 
 			editor = monaco.editor.create(document.getElementById('container'), {
@@ -2860,6 +2866,7 @@ function setupAutosave() {
 </body>
 
 </html>
+
 
 
 
