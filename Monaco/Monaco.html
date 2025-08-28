@@ -2340,37 +2340,39 @@
       }
   </style>
   <script src="vs/loader.js"></script>
-  <script type="text/javascript">
-      require.config({
-          paths: {
-              'vs': 'vs'
-          }
-      });
-
-      let editor;
-      let Proposals = [];
-      let currentTab = null;
-      let tabs = [];
-
-      const luaIcon = `<img src="luaicon.png" alt="Lua Icon" style="width: 20px; height: 20px;" />`;
-
-        class Tab {
-            constructor(title, content = '') {
-                this.id = 'tab-' + Math.random().toString(36).substr(2, 9);
-                this.title = title;
-                this.content = content;
-                this.element = null;
-            }
+ <script type="text/javascript">
+    require.config({
+        paths: {
+            'vs': 'vs'
         }
+    });
 
-        function saveTabs() {
-          const tabsData = tabs.map(tab => ({
-        id: tab.id,
-        title: tab.title,
-        content: tab.content
-    }));
-    localStorage.setItem('editorTabs', JSON.stringify(tabsData));
-}
+    let editor;
+    let Proposals = [];
+    let currentTab = null;
+    let tabs = [];
+
+    const luaIcon = `<img src="luaicon.png" alt="Lua Icon" style="width: 20px; height: 20px;" />`;
+
+    class Tab {
+        constructor(title, content = '') {
+            this.id = 'tab-' + Math.random().toString(36).substr(2, 9);
+            this.title = title;
+            this.content = content;
+            this.element = null;
+        }
+    }
+
+    function saveTabs() {
+        const tabsData = tabs.map(tab => ({
+            id: tab.id,
+            title: tab.title,
+            content: tab.content
+        }));
+        localStorage.setItem('editorTabs', JSON.stringify(tabsData));
+    }
+
+	  
 function loadTabs() {
     const savedTabs = localStorage.getItem('editorTabs');
     if (savedTabs) {
@@ -2854,6 +2856,7 @@ function setupAutosave() {
 </body>
 
 </html>
+
 
 
 
