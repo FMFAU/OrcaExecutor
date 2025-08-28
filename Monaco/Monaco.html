@@ -2586,11 +2586,11 @@ function setupAutosave() {
 			    rules: [
 			        {
 			            token: 'keyword',
-			            foreground: 'cc99cc',
+			            foreground: 'c586c0'
 			        },
 			        {
 			            token: 'comment',
-			            foreground: '999999'
+			            foreground: '6e7681'
 			        },
 			        {
 			            token: 'number',
@@ -2602,27 +2602,32 @@ function setupAutosave() {
 			        },
 			        {
 			            token: 'variable.parameter',
-			            foreground: '6699cc'
+			            foreground: '9cdcfe'
 			        },
 			        {
 			            token: 'variable',
-			            foreground: '6699cc'
+			            foreground: '9cdcfe'
 			        },
 			        {
 			            token: 'type',
-			            foreground: 'ffa1dc'
+			            foreground: '569cd6'
 			        },
 			        {
 			            token: 'function',
-			            foreground: 'ffa1dc'
+			            foreground: '4fc1ff'
 			        },
 			        {
 			            token: 'class',
 			            foreground: 'ffa1dc',
 			            fontStyle: 'bold'
+			        },
+			        {
+			            token: 'operator',
+			            foreground: 'd4d4d4'
 			        }
 			    ]
 			});
+
 
 
 			editor = monaco.editor.create(document.getElementById('container'), {
@@ -2851,6 +2856,7 @@ function setupAutosave() {
 </body>
 
 </html>
+
 
 
 
