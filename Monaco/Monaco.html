@@ -96,45 +96,44 @@
     };
   }
 
-	var encodingModes = {
-	  'pseudo-latin1': {
-	    fixup: checkChars(/[^\x00-\xff]/),
-	    encodeByte: function (value) {
-	      if (value === null)
-	        return '';
-	      return String.fromCharCode(value);
-	    },
-	    encodeUTF8: function (codepoint) {
-	      return encodeUTF8(codepoint);
-	    },
-	  },
-	  'x-user-defined': {
-	    fixup: checkChars(/[^\x00-\x7f\uf780-\uf7ff]/),
-	    encodeByte: function (value) {
-	      if (value === null)
-	        return '';
-	      if (value >= 0x80)
-	        return String.fromCharCode(value | 0xf700);
-	      return String.fromCharCode(value);
-	    },
-	    encodeUTF8: function (codepoint) {
-	      return encodeUTF8(codepoint, 0xf700);
-	    }
-	  },
-	  'none': {
-	    discardStrings: true,
-	    fixup: function (s) {
-	      return s;
-	    },
-	    encodeByte: function (value) {
-	      return '';
-	    },
-	    encodeUTF8: function (codepoint) {
-	      return '';
-	    }
-	  }
-	};
-
+  var encodingModes = {
+    'pseudo-latin1': {
+      fixup: checkChars(/[^\x00-\xff]/),
+      encodeByte: function (value) {
+        if (value === null)
+          return '';
+        return String.fromCharCode(value);
+      },
+      encodeUTF8: function (codepoint) {
+        return encodeUTF8(codepoint);
+      },
+    },
+    'x-user-defined': {
+      fixup: checkChars(/[^\x00-\x7f\uf780-\uf7ff]/),
+      encodeByte: function (value) {
+        if (value === null)
+          return '';
+        if (value >= 0x80)
+          return String.fromCharCode(value | 0xf700);
+        return String.fromCharCode(value);
+      },
+      encodeUTF8: function (codepoint) {
+        return encodeUTF8(codepoint, 0xf700);
+      }
+    },
+    'none': {
+      discardStrings: true,
+      fixup: function (s) {
+        return s;
+      },
+      encodeByte: function (value) {
+        return '';
+      },
+      encodeUTF8: function (codepoint) {
+        return '';
+      }
+    }
+  };
 
   var EOF = 1,
     StringLiteral = 2,
@@ -2340,39 +2339,37 @@
       }
   </style>
   <script src="vs/loader.js"></script>
- <script type="text/javascript">
-    require.config({
-        paths: {
-            'vs': 'vs'
+  <script type="text/javascript">
+      require.config({
+          paths: {
+              'vs': 'vs'
+          }
+      });
+
+      let editor;
+      let Proposals = [];
+      let currentTab = null;
+      let tabs = [];
+
+      const luaIcon = `<img src="luaicon.png" alt="Lua Icon" style="width: 20px; height: 20px;" />`;
+
+        class Tab {
+            constructor(title, content = '') {
+                this.id = 'tab-' + Math.random().toString(36).substr(2, 9);
+                this.title = title;
+                this.content = content;
+                this.element = null;
+            }
         }
-    });
 
-    let editor;
-    let Proposals = [];
-    let currentTab = null;
-    let tabs = [];
-
-    const luaIcon = `<img src="luaicon.png" alt="Lua Icon" style="width: 20px; height: 20px;" />`;
-
-    class Tab {
-        constructor(title, content = '') {
-            this.id = 'tab-' + Math.random().toString(36).substr(2, 9);
-            this.title = title;
-            this.content = content;
-            this.element = null;
-        }
-    }
-
-    function saveTabs() {
-        const tabsData = tabs.map(tab => ({
-            id: tab.id,
-            title: tab.title,
-            content: tab.content
-        }));
-        localStorage.setItem('editorTabs', JSON.stringify(tabsData));
-    }
-
-	  
+        function saveTabs() {
+          const tabsData = tabs.map(tab => ({
+        id: tab.id,
+        title: tab.title,
+        content: tab.content
+    }));
+    localStorage.setItem('editorTabs', JSON.stringify(tabsData));
+}
 function loadTabs() {
     const savedTabs = localStorage.getItem('editorTabs');
     if (savedTabs) {
@@ -2590,11 +2587,11 @@ function setupAutosave() {
 			    rules: [
 			        {
 			            token: '',
-			            foreground: '858585'
+			            foreground: '696969'
 			        },
 			        {
 			            token: 'global',
-			            foreground: '3AD3D6',
+			            foreground: '2B9D9E',
 			            fontStyle: "bold"
 			        },
 			        {
@@ -2856,10 +2853,6 @@ function setupAutosave() {
 </body>
 
 </html>
-
-
-
-
 
 
 
