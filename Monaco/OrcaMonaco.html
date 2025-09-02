@@ -2860,7 +2860,7 @@ function setupAutosave() {
 				
 				for (const Key of ["delfolder"])
 				    AddIntellisense(Key, "File",
-				        "Deletes the folder at the given path and all its contents.\nUse with caution; this cannot be undone.",
+				        "Deletes the folder at the given path and all its contents.\nUse with caution; this action cannot be undone.",
 				        "delfolder(path)");
 				
 				for (const Key of ["appendfile"])
@@ -2870,8 +2870,9 @@ function setupAutosave() {
 				
 				for (const Key of ["deletefile"])
 				    AddIntellisense(Key, "File",
-				        "Deletes the file called filename in the workspace folder.\nUse with caution; this cannot be undone.",
+				        "Deletes the file called filename in the workspace folder.\nUse with caution; this action cannot be undone.",
 				        "deletefile(filename)");
+
 
 			}
 			load();
