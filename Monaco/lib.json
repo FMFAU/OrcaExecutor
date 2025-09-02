@@ -85,12 +85,6 @@
           "description": "Sends a http request with parameters in options.",
           "insert": "request"
       },
-      "readfile": {
-          "label": "readfile(file);",
-          "type": "Method",
-          "description": "Returns the content of the file. ",
-          "insert": "readfile"
-      },
       "loadstring": {
           "label": "loadstring(chunk, chunk_name);",
           "type": "Method",
@@ -132,18 +126,6 @@
           "type": "Method",
           "description": "Hooks function old, replacing it with the function hook.\nThe old function is returned, you must use this function in order to call the original function.",
           "insert": "hookfunction"
-      },
-      "listfiles": {
-          "label": "listfiles(folder);",
-          "type": "Method",
-          "description": "Returns a table of files in folder.",
-          "insert": "listfiles"
-      },
-      "makefolder": {
-          "label": "makefolder(../FileName);",
-          "type": "Method",
-          "description": "Creates a folder in the selected directory.",
-          "insert": "makefolder"
       },
       "keyrelease": {
           "label": "keyrelease();",
@@ -325,12 +307,7 @@
           "description": "Simulates the right mouse button being clicked one time.",
           "insert": "mouse2click"
       },
-      "writefile": {
-          "label": "writefile(filename, data);",
-          "type": "Method",
-          "description": "Writes data to a file called filename in the workspace folder.\n If the file already exists, the file is overwritten. This function is restricted to the workspace folder.",
-          "insert": "writefile"
-      },
+
       "getreg": {
           "label": "getreg();",
           "type": "Method",
@@ -342,6 +319,66 @@
           "type": "Method",
           "description": "Copies data to the clipboard.",
           "insert": "setclipboard"
+      }
+      "makefolder": {
+          "label": "makefolder(path);",
+          "type": "Method",
+          "description": "Creates a folder at the specified path in the workspace folder.\nIf the folder already exists, nothing is changed.",
+          "insert": "makefolder"
+      },
+      "isfolder": {
+          "label": "isfolder(path);",
+          "type": "Method",
+          "description": "Returns true if the given path exists and is a folder.\nReturns false otherwise.",
+          "insert": "isfolder"
+      },
+      "isfile": {
+          "label": "isfile(path);",
+          "type": "Method",
+          "description": "Returns true if the given path exists and is a file.\nReturns false otherwise.",
+          "insert": "isfile"
+      },
+      "delfolder": {
+          "label": "delfolder(path);",
+          "type": "Method",
+          "description": "Deletes the folder at the given path and all its contents.\nUse with caution; this cannot be undone.",
+          "insert": "delfolder"
+      },
+      "writefile": {
+          "label": "writefile(filename, data);",
+          "type": "Method",
+          "description": "Writes data to a file called filename in the workspace folder.\nIf the file already exists, the file is overwritten. This function is restricted to the workspace folder.",
+          "insert": "writefile"
+      },
+      "appendfile": {
+          "label": "appendfile(filename, data);",
+          "type": "Method",
+          "description": "Appends data to a file called filename in the workspace folder.\nIf the file does not exist, it is created.",
+          "insert": "appendfile"
+      },
+      "readfile": {
+          "label": "readfile(filename);",
+          "type": "Method",
+          "description": "Returns the contents of a file called filename in the workspace folder as a string.\nThis function is restricted to the workspace folder.",
+          "insert": "readfile"
+      },
+      "listfiles": {
+          "label": "listfiles(folder);",
+          "type": "Method",
+          "description": "Returns a table containing all files in the specified folder.\nThis function is restricted to the workspace folder.",
+          "insert": "listfiles"
+      },
+      "deletefile": {
+          "label": "deletefile(filename);",
+          "type": "Method",
+          "description": "Deletes the file called filename in the workspace folder.\nUse with caution; this cannot be undone.",
+          "insert": "deletefile"
+      },
+      "loadfile": {
+          "label": "loadfile(filename);",
+          "type": "Method",
+          "description": "Loads and compiles a Lua file called filename from the workspace folder.\nReturns the compiled function, or nil plus an error message if the file cannot be loaded.\nThis function is restricted to the workspace folder.",
+          "insert": "loadfile"
       }
   },
   "debug_library": {
