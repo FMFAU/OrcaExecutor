@@ -2828,6 +2828,8 @@ function setupAutosave() {
 
 				for (const Key of ["_G", "_VERSION", "Enum", "game", "plugin", "shared", "script", "workspace", "DebuggerManager", "elapsedTime", "LoadLibrary", "PluginManager", "settings", "tick", "time", "typeof", "UserSettings"])
                     AddIntellisense(Key, "Keyword", Key, Key);
+				for (const Key of ["writefile"])
+                    AddIntellisense(Key, "File", Key, Key);
 
 				for (const Key of ["and", "break", "do", "else", "elseif", "end", "false", "for", "function", "if", "in", "local", "nil", "not", "or", "repeat", "return", "then", "true", "until", "while"])
                     AddIntellisense(Key, "Variable", Key, Key);
@@ -2843,6 +2845,7 @@ function setupAutosave() {
 
                 for (const Key of ["Visible", "Color", "Transparency", "Thickness", "From", "To", "Text", "Size", "Center", "Outline", "OutlineColor", "Position", "TextBounds", "Font", "Data", "Rounding", "NumSides", "Radius", "Filled", "PointA", "PointB", "PointC", "PointD"])
 					AddIntellisense(Key, "Property", "Property for Drawing Library", Key);
+				
 
 			}
 			load();
