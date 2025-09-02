@@ -87,7 +87,7 @@
       },
       "readfile": {
           "label": "readfile(file);",
-          "type": "Method",
+          "type": "File",
           "description": "Returns the content of the file. ",
           "insert": "readfile"
       },
@@ -135,9 +135,15 @@
       },
       "listfiles": {
           "label": "listfiles(folder);",
-          "type": "Method",
+          "type": "File",
           "description": "Returns a table of files in folder.",
           "insert": "listfiles"
+      },
+      "makefolder": {
+          "label": "makefolder(path/to/folder\);",
+          "type": "File",
+          "description": "Creates a folder in the selected directory.",
+          "insert": "makefolder"
       },
       "keyrelease": {
           "label": "keyrelease();",
@@ -321,7 +327,7 @@
       },
       "writefile": {
           "label": "writefile(filename, data);",
-          "type": "Method",
+          "type": "File",
           "description": "Writes data to a file called filename in the workspace folder.\n If the file already exists, the file is overwritten. This function is restricted to the workspace folder.",
           "insert": "writefile"
       },
