@@ -2826,9 +2826,6 @@ function setupAutosave() {
 			        }
 			    }
 			
-			    for (const Key of ["makefolder","isfolder","isfile","delfolder","writefile","appendfile","readfile","listfiles","deletefile"])
-			        AddIntellisense(Key, "File", Key + "()", Key + "(path)");
-			
 			    for (const Key of ["_G", "_VERSION", "Enum", "game", "plugin", "shared", "script", "workspace", "DebuggerManager", "elapsedTime", "LoadLibrary", "PluginManager", "settings", "tick", "time", "typeof", "UserSettings"])
 			        AddIntellisense(Key, "Keyword", Key, Key);
 			
