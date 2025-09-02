@@ -2843,7 +2843,7 @@ function setupAutosave() {
                 for (const Key of ["Visible", "Color", "Transparency", "Thickness", "From", "To", "Text", "Size", "Center", "Outline", "OutlineColor", "Position", "TextBounds", "Font", "Data", "Rounding", "NumSides", "Radius", "Filled", "PointA", "PointB", "PointC", "PointD"])
 					AddIntellisense(Key, "Property", "Property for Drawing Library", Key);
 				for (const Key of ["makefolder"])
-				AddIntellisense(Key, "File", Key + "Create a Folder as \n(Name) \nor\n (Directory\\Name)", Key);
+				AddIntellisense(Key, "File", "Creates a folder at the specified path.\nUse a simple name (e.g., 'FolderName')\nor a full path (e.g., 'Directory\\FolderName')", Key);
 			}
 			load();
 			Refresh = function () {
