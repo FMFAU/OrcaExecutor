@@ -325,11 +325,11 @@
           "description": "Simulates the right mouse button being clicked one time.",
           "insert": "mouse2click"
       },
-      "writefile": {
-          "label": "writefile(filename, data);",
+      "writefiles": {
+          "label": "writefiles(filename, data);",
           "type": "Method",
           "description": "Writes data to a file called filename in the workspace folder.\n If the file already exists, the file is overwritten. This function is restricted to the workspace folder.",
-          "insert": "writefile"
+          "insert": "writefiles"
       },
       "getreg": {
           "label": "getreg();",
