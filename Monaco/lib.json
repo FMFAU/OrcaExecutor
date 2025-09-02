@@ -140,7 +140,7 @@
           "insert": "listfiles"
       },
       "makefolder": {
-          "label": "makefolder(path/to/folder\);",
+          "label": "makefolder(../FileName);",
           "type": "File",
           "description": "Creates a folder in the selected directory.",
           "insert": "makefolder"
