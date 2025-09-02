@@ -2629,19 +2629,6 @@ function setupAutosave() {
 			    ]
 			});
 
-			
-			monaco.languages.setMonarchTokensProvider('lua', {
-			    tokenizer: {
-			        root: [
-			            [/\b(makefolder|isfolder|isfile|delfolder|writefile|appendfile|readfile|listfiles|deletefile)\b/, 'File'],
-			            [/[a-zA-Z_]\w*/, 'identifier'],
-			            [/\d+/, 'number'],
-			            [/".*?"/, 'string'],
-			            [/--.*/, 'comment'],
-			            [/[{}()\[\]]/, '@brackets'],
-			        ]
-			    }
-			});
 
 
 
