@@ -2842,8 +2842,37 @@ function setupAutosave() {
 
                 for (const Key of ["Visible", "Color", "Transparency", "Thickness", "From", "To", "Text", "Size", "Center", "Outline", "OutlineColor", "Position", "TextBounds", "Font", "Data", "Rounding", "NumSides", "Radius", "Filled", "PointA", "PointB", "PointC", "PointD"])
 					AddIntellisense(Key, "Property", "Property for Drawing Library", Key);
+				
 				for (const Key of ["makefolder"])
-				AddIntellisense(Key, "File", "Creates a folder at the specified path.\nUse a simple name (e.g., 'FolderName')\nor a full path (e.g., 'Directory\\FolderName')", Key);
+				    AddIntellisense(Key, "File",
+				        "Creates a folder at the specified path in the workspace folder.\nIf the folder already exists, nothing is changed.",
+				        "makefolder(path)");
+				
+				for (const Key of ["isfolder"])
+				    AddIntellisense(Key, "File",
+				        "Returns true if the given path exists and is a folder.\nReturns false otherwise.",
+				        "isfolder(path)");
+				
+				for (const Key of ["isfile"])
+				    AddIntellisense(Key, "File",
+				        "Returns true if the given path exists and is a file.\nReturns false otherwise.",
+				        "isfile(path)");
+				
+				for (const Key of ["delfolder"])
+				    AddIntellisense(Key, "File",
+				        "Deletes the folder at the given path and all its contents.\nUse with caution; this cannot be undone.",
+				        "delfolder(path)");
+				
+				for (const Key of ["appendfile"])
+				    AddIntellisense(Key, "File",
+				        "Appends data to a file called filename in the workspace folder.\nIf the file does not exist, it is created.",
+				        "appendfile(filename, data)");
+				
+				for (const Key of ["deletefile"])
+				    AddIntellisense(Key, "File",
+				        "Deletes the file called filename in the workspace folder.\nUse with caution; this cannot be undone.",
+				        "deletefile(filename)");
+
 			}
 			load();
 			Refresh = function () {
