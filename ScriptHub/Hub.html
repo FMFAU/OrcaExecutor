@@ -11,6 +11,29 @@
             box-sizing: border-box;
         }
 
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3e3e42;
+            border-radius: 6px;
+            border: none;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4e4e52;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: #5e5e62;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #141414;
@@ -23,9 +46,8 @@
             max-width: 100%;
         }
 
-        /* Header Section */
         .header {
-            margin-bottom: 0px; /* Connected to filters */
+            margin-bottom: 0px;
         }
 
         .header h1 {
@@ -40,12 +62,11 @@
             font-size: 14px;
         }
 
-        /* Filters Section - Connected to header */
         .filters {
             background: #282828;
             padding: 20px;
             margin-bottom: 24px;
-            border-top: none; /* Connected to header */
+            border-top: none;
         }
 
         .filters h3 {
@@ -74,7 +95,6 @@
             user-select: none;
         }
 
-        /* Custom Checkbox */
         .checkbox {
             width: 18px;
             height: 18px;
@@ -106,7 +126,6 @@
             font-weight: bold;
         }
 
-        /* Loading Indicator */
         .loading {
             display: flex;
             justify-content: center;
@@ -128,7 +147,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Scripts Grid */
         .scripts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -136,7 +154,6 @@
             margin-bottom: 24px;
         }
 
-        /* Script Card */
         .script-card {
             background: #282828;
             border-radius: 4px;
@@ -155,7 +172,6 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.4);
         }
 
-        /* Card Header */
         .card-header {
             height: 120px;
             position: relative;
@@ -224,7 +240,6 @@
             font-weight: bold;
         }
 
-        /* Card Content */
         .card-content {
             padding: 8px 12px;
             flex: 1;
@@ -311,7 +326,6 @@
         .tag.key { background: #FF9800; }
         .tag.universal { background: #2196F3; }
 
-        /* No Results */
         .no-results {
             text-align: center;
             padding: 60px 20px;
@@ -336,7 +350,6 @@
             color: #AAA;
         }
 
-        /* Auto-loading indicator */
         .auto-loading {
             text-align: center;
             padding: 20px;
@@ -344,7 +357,6 @@
             font-size: 14px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .scripts-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -416,11 +428,10 @@
             init() {
                 this.setupEventListeners();
                 this.setupInfiniteScroll();
-                this.loadScripts(); // Load trending by default
+                this.loadScripts();
             }
 
             setupEventListeners() {
-                // Filter checkboxes
                 document.getElementById('verifiedFilter').addEventListener('click', () => {
                     this.toggleFilter('verified');
                 });
@@ -431,7 +442,6 @@
                     this.toggleFilter('noKey');
                 });
 
-                // Listen for search from C#
                 window.addEventListener('message', (event) => {
                     if (event.data && event.data.action === 'search') {
                         this.searchScripts(event.data.query);
@@ -449,7 +459,6 @@
                             const windowHeight = window.innerHeight;
                             const documentHeight = document.documentElement.scrollHeight;
                             
-                            // Load more when user is 200px from bottom
                             if (scrollTop + windowHeight >= documentHeight - 200) {
                                 this.loadMoreScripts();
                             }
@@ -497,10 +506,8 @@
                     const isEmptySearch = !this.currentQuery;
 
                     if (isEmptySearch) {
-                        // Load trending scripts
                         url = 'https://scriptblox.com/api/script/trending';
                     } else {
-                        // Search with query and filters
                         url = `https://scriptblox.com/api/script/search?q=${encodeURIComponent(this.currentQuery)}&page=${this.currentPage}&max=20`;
                         
                         if (this.filters.verified) url += '&verified=1';
@@ -515,11 +522,9 @@
                     let totalPages = 1;
 
                     if (isEmptySearch && data.result?.scripts) {
-                        // Trending response
                         scripts = data.result.scripts;
-                        this.hasMorePages = false; // Trending doesn't support pagination
+                        this.hasMorePages = false;
                     } else if (data.result?.scripts) {
-                        // Search response
                         scripts = data.result.scripts;
                         totalPages = data.result.totalPages || 1;
                         this.hasMorePages = this.currentPage < totalPages;
@@ -631,7 +636,6 @@
             }
 
             loadScript(script) {
-                // Send script data back to C# WPF application
                 if (window.chrome && window.chrome.webview) {
                     window.chrome.webview.postMessage({
                         action: 'loadScript',
@@ -667,12 +671,10 @@
             }
         }
 
-        // Initialize the hub when page loads
         document.addEventListener('DOMContentLoaded', () => {
             window.communityHub = new CommunityHub();
         });
 
-        // Expose search function globally for C# to call
         window.searchCommunityScripts = function(query) {
             if (window.communityHub) {
                 window.communityHub.searchScripts(query || '');
