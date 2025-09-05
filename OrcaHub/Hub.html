@@ -291,9 +291,12 @@
       function loadScript(script) {
         if (window.chrome && window.chrome.webview) {
           window.chrome.webview.postMessage({
-            action: 'loadOrcaScript',
-            title: script.name || 'Untitled Script',
+            action: 'loadScriptToNewTab',
+            name: script.name || 'Untitled Script',
             script: script.script || '',
+            description: script.description || 'No description',
+            trusted: script.trusted || false,
+            universal: script.universal || false,
             source: 'orca'
           });
         }
