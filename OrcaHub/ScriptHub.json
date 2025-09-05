@@ -1,26 +1,34 @@
 window.OrcaHubData = [
   {
     "name": "Infinite Yield",
-    "description": "A Powerful Open-Source Admin built for all games.",
-    "script": "print('hi')",
-    "trusted": true,
-    "universal": true,
-    "raw_image": "https://orca-executor.vercel.app/OrcaHub/example.png"
-  },
-  {
-    "name": "Dark Dex",
-    "description": "Open-Source Debug Suite",
-    "script": "print('test')",
-    "trusted": true,
-    "universal": true,
-    "raw_image": "https://orca-executor.vercel.app/OrcaHub/example2.png"
-  },
-    {
-    "name": "Dark Dex",
-    "description": "Open-Source Debu24094384723907473789453689753624897534659873426589723465982375623789467895342936782456789253467895234678923453894567234526789367894256789324567892345967834526789324567893544203g Suite",
-    "script": "print('test')",
+    "description": "A powerful Admin Script",
+    "script": "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()",
     "trusted": true,
     "universal": false,
-    "raw_image": "https://orca-executor.vercel.app/OrcaHub/example2.png"
+    "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/IY_Logo_Small.png"
+  },
+  {
+    "name": "Dex Explorer",
+    "description": "Dex is a debugging suite designed to help the user debug games and find any vuln.",
+    "script": "loadstring(game:HttpGet('https://raw.githubusercontent.com/infyiff/backup/main/dex.lua'))()",
+    "trusted": true,
+    "universal": false,
+    "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/Dex_Logo_Custom.png"
+  },
+  {
+    "name": "Simple Spy",
+    "description": "A Debugger to locate running Remotes",
+    "script": "loadstring(game:HttpGet('https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua'))()",
+    "trusted": true,
+    "universal": false,
+    "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/SimpleSpy_Logo_Custom.png"
+  },
+  {
+    "name": "Hydroxide",
+    "description": "Lua runtime introspection and network capturing tool for games on the Roblox engine.",
+    "script": "local owner = \"Upbolt\"\nlocal branch = \"revision\"\n\nlocal function webImport(file)\n    return loadstring(game:HttpGetAsync((\"https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua\"):format(owner, branch, file)), file .. '.lua')()\nend\n\nwebImport(\"init\")\nwebImport(\"ui/main\")",
+    "trusted": true,
+    "universal": false,
+    "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/Hydroxide_Logo_Custom.png"
   }
 ];
