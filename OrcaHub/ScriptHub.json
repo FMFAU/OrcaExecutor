@@ -4,7 +4,7 @@ window.OrcaHubData = [
     "description": "A powerful Admin Script",
     "script": "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()",
     "trusted": true,
-    "universal": false,
+    "universal": true,
     "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/IY_Logo_Small.png"
   },
   {
@@ -12,7 +12,7 @@ window.OrcaHubData = [
     "description": "Dex is a debugging suite designed to help the user debug games and find any vuln.",
     "script": "loadstring(game:HttpGet('https://raw.githubusercontent.com/infyiff/backup/main/dex.lua'))()",
     "trusted": true,
-    "universal": false,
+    "universal": true,
     "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/Dex_Logo_Custom.png"
   },
   {
@@ -20,7 +20,7 @@ window.OrcaHubData = [
     "description": "A Debugger to locate running Remotes",
     "script": "loadstring(game:HttpGet('https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua'))()",
     "trusted": true,
-    "universal": false,
+    "universal": true,
     "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/SimpleSpy_Logo_Custom.png"
   },
   {
@@ -28,7 +28,7 @@ window.OrcaHubData = [
     "description": "Lua runtime introspection and network capturing tool for games on the Roblox engine.",
     "script": "local owner = \"Upbolt\"\nlocal branch = \"revision\"\n\nlocal function webImport(file)\n    return loadstring(game:HttpGetAsync((\"https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua\"):format(owner, branch, file)), file .. '.lua')()\nend\n\nwebImport(\"init\")\nwebImport(\"ui/main\")",
     "trusted": true,
-    "universal": false,
+    "universal": true,
     "raw_image": "https://orca-executor.vercel.app/ScriptHub/Images/Hydroxide_Logo_Custom.png"
   }
 ];
