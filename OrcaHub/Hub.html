@@ -255,30 +255,17 @@
         <p>The Orca Hub is currently empty</p>
       </div>
     </div>
+    <script src="https://orca-executor.vercel.app/OrcaHub/ScriptHub.json"></script>
     <script>
-      // Load ScriptHub.json dynamically
-      fetch('https://orca-executor.vercel.app/OrcaHub/ScriptHub.json')
-        .then(response => {
-          if (!response.ok) throw new Error('Failed to load ScriptHub.json');
-          return response.json();
-        })
-        .then(data => {
-          window.OrcaHubData = data;
-          renderHub();
-        })
-        .catch(error => {
-          console.error('Error loading ScriptHub.json:', error);
-          document.getElementById('loadingIndicator').style.display = 'none';
-          document.getElementById('noResults').style.display = 'block';
-        });
-
       function renderHub() {
         const loading = document.getElementById('loadingIndicator');
         const grid = document.getElementById('scriptsGrid');
         const noResults = document.getElementById('noResults');
         loading.style.display = 'none';
 
+        console.log('OrcaHubData:', window.OrcaHubData);
         if (!window.OrcaHubData || !window.OrcaHubData.length) {
+          console.log('No scripts found, showing no-results');
           noResults.style.display = 'block';
           return;
         }
@@ -316,7 +303,7 @@
       function loadScript(script) {
         console.log('loadScript called for:', script.name);
         if (window.chrome && window.chrome.webview) {
-          console.log('Posting message to WebView2:', script);
+          console.log('Posting message:', script);
           window.chrome.webview.postMessage({
             action: 'loadScriptToNewTab',
             name: script.name || 'Untitled Script',
