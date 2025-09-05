@@ -4,6 +4,7 @@ window.OrcaHubData = [
     "description": "A Powerful Open-Source Admin built for all games.",
     "script": "print('hi')",
     "trusted": true,
+    "universal": true,
     "raw_image": "https://orca-executor.vercel.app/OrcaHub/example.png"
   },
   {
@@ -11,6 +12,7 @@ window.OrcaHubData = [
     "description": "Open-Source Debug Suite",
     "script": "print('test')",
     "trusted": true,
+    "universal": true,
     "raw_image": "https://orca-executor.vercel.app/OrcaHub/example2.png"
   },
     {
@@ -18,6 +20,7 @@ window.OrcaHubData = [
     "description": "Open-Source Debu24094384723907473789453689753624897534659873426589723465982375623789467895342936782456789253467895234678923453894567234526789367894256789324567892345967834526789324567893544203g Suite",
     "script": "print('test')",
     "trusted": true,
+    "universal": false,
     "raw_image": "https://orca-executor.vercel.app/OrcaHub/example2.png"
   }
 ];
