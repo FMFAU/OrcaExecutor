@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Scripts Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #141414;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 100%;
+        }
+
+        /* Header Section */
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .header p {
+            color: #AAAAAA;
+            font-size: 14px;
+        }
+
+        /* Filters Section */
+        .filters {
+            background: #2D2D30;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid #3E3E42;
+        }
+
+        .filters h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            color: #CCCCCC;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Custom Checkbox */
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #555;
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox:hover {
+            border-color: #007ACC;
+        }
+
+        .checkbox.checked {
+            background: #007ACC;
+            border-color: #007ACC;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Loading Indicator */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #333;
+            border-top: 4px solid #007ACC;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Scripts Grid */
+        .scripts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Script Card */
+        .script-card {
+            background: #2D2D30;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .script-card:hover {
+            background: #373739;
+            transform: scale(1.02);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+        }
+
+        /* Card Header */
+        .card-header {
+            height: 120px;
+            position: relative;
+            background: linear-gradient(135deg, #3C3C41, #28282D);
+            overflow: hidden;
+        }
+
+        .game-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-image.loaded {
+            opacity: 0.8;
+        }
+
+        .placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #46464B;
+            font-size: 32px;
+            color: #8C8C91;
+        }
+
+        .game-name-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 16px 12px 8px;
+        }
+
+        .game-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .verified-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #43A047;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        /* Card Content */
+        .card-content {
+            padding: 8px 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .script-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .owner-avatar {
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            background: #5A5A5F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            overflow: hidden;
+        }
+
+        .owner-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .owner-name {
+            font-size: 11px;
+            color: #B4B4B9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .views-info {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 10px;
+            color: #96969B;
+        }
+
+        .tags-row {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .tag {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .tag.key { background: #FF9800; }
+        .tag.universal { background: #2196F3; }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        .no-results .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .no-results h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .no-results p {
+            font-size: 14px;
+            color: #AAA;
+        }
+
+        /* Load More Button */
+        .load-more {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .load-more-btn {
+            background: #007ACC;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .load-more-btn:hover {
+            background: #0086E6;
+        }
+
+        .load-more-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .scripts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 12px;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Community Scripts</h1>
+            <p>Discover and share scripts from the community</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <h3>Filters</h3>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <div class="checkbox" id="verifiedFilter"></div>
+                    <label for="verifiedFilter">Verified Only</label>
+                </div>
+                <div class="filter-group">
+                    <div class="checkbox" id="universalFilter"></div>
+                    <label for="universalFilter">Universal Scripts</label>
+                </div>
+                <div class="filter-group">
+                    <div class="checkbox" id="noKeyFilter"></div>
+                    <label for="noKeyFilter">No Key Required</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Scripts Grid -->
+        <div class="scripts-grid" id="scriptsGrid"></div>
+
+        <!-- No Results -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="icon">📭</div>
+            <h3>Nothing found</h3>
+            <p>Try changing your search terms or filters</p>
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more" id="loadMoreSection" style="display: none;">
+            <button class="load-more-btn" id="loadMoreBtn">Load More</button>
+        </div>
+    </div>
+
+    <script>
+        class CommunityHub {
+            constructor() {
+                this.scripts = [];
+                this.currentPage = 1;
+                this.isLoading = false;
+                this.hasMorePages = true;
+                this.currentQuery = 'hub';
+                this.filters = {
+                    verified: false,
+                    universal: false,
+                    noKey: false
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadScripts(); // Load trending by default
+            }
+
+            setupEventListeners() {
+                // Filter checkboxes
+                document.getElementById('verifiedFilter').addEventListener('click', () => {
+                    this.toggleFilter('verified');
+                });
+                document.getElementById('universalFilter').addEventListener('click', () => {
+                    this.toggleFilter('universal');
+                });
+                document.getElementById('noKeyFilter').addEventListener('click', () => {
+                    this.toggleFilter('noKey');
+                });
+
+                // Load more button
+                document.getElementById('loadMoreBtn').addEventListener('click', () => {
+                    this.loadMoreScripts();
+                });
+
+                // Listen for search from C#
+                window.addEventListener('message', (event) => {
+                    if (event.data && event.data.action === 'search') {
+                        this.searchScripts(event.data.query);
+                    }
+                });
+            }
+
+            toggleFilter(filterName) {
+                const checkbox = document.getElementById(filterName + 'Filter');
+                this.filters[filterName] = !this.filters[filterName];
+                
+                if (this.filters[filterName]) {
+                    checkbox.classList.add('checked');
+                } else {
+                    checkbox.classList.remove('checked');
+                }
+
+                this.resetAndSearch();
+            }
+
+            resetAndSearch() {
+                this.scripts = [];
+                this.currentPage = 1;
+                this.hasMorePages = true;
+                document.getElementById('scriptsGrid').innerHTML = '';
+                this.loadScripts();
+            }
+
+            async searchScripts(query) {
+                this.currentQuery = query.trim();
+                this.resetAndSearch();
+            }
+
+            async loadScripts() {
+                if (this.isLoading || !this.hasMorePages) return;
+
+                this.isLoading = true;
+                this.showLoading(true);
+
+                try {
+                    let url;
+                    const isEmptySearch = !this.currentQuery;
+
+                    if (isEmptySearch) {
+                        // Load trending scripts
+                        url = 'https://scriptblox.com/api/script/trending';
+                    } else {
+                        // Search with query and filters
+                        url = `https://scriptblox.com/api/script/search?q=${encodeURIComponent(this.currentQuery)}&page=${this.currentPage}&max=20`;
+                        
+                        if (this.filters.verified) url += '&verified=1';
+                        if (this.filters.universal) url += '&universal=1';
+                        if (this.filters.noKey) url += '&key=0';
+                    }
+
+                    const response = await this.fetchWithTimeout(url);
+                    const data = await response.json();
+
+                    let scripts = [];
+                    let totalPages = 1;
+
+                    if (isEmptySearch && data.result?.scripts) {
+                        // Trending response
+                        scripts = data.result.scripts;
+                        this.hasMorePages = false; // Trending doesn't support pagination
+                    } else if (data.result?.scripts) {
+                        // Search response
+                        scripts = data.result.scripts;
+                        totalPages = data.result.totalPages || 1;
+                        this.hasMorePages = this.currentPage < totalPages;
+                    }
+
+                    if (scripts.length > 0) {
+                        this.scripts.push(...scripts);
+                        this.renderScripts(scripts);
+                        this.updateLoadMoreButton();
+                    } else if (this.scripts.length === 0) {
+                        this.showNoResults(true);
+                    }
+
+                } catch (error) {
+                    console.error('Error loading scripts:', error);
+                    if (this.scripts.length === 0) {
+                        this.showNoResults(true);
+                    }
+                } finally {
+                    this.isLoading = false;
+                    this.showLoading(false);
+                }
+            }
+
+            async loadMoreScripts() {
+                if (!this.hasMorePages || this.isLoading || !this.currentQuery) return;
+                
+                this.currentPage++;
+                await this.loadScripts();
+            }
+
+            async fetchWithTimeout(url, timeout = 10000) {
+                const controller = new AbortController();
+                const id = setTimeout(() => controller.abort(), timeout);
+
+                try {
+                    const response = await fetch(url, {
+                        signal: controller.signal,
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                            'Accept': '*/*',
+                            'Accept-Language': 'en-US,en;q=0.9',
+                            'Referer': 'https://scriptblox.com/',
+                            'Origin': 'https://scriptblox.com'
+                        }
+                    });
+                    clearTimeout(id);
+                    return response;
+                } catch (error) {
+                    clearTimeout(id);
+                    throw error;
+                }
+            }
+
+            renderScripts(scripts) {
+                const grid = document.getElementById('scriptsGrid');
+                
+                scripts.forEach(script => {
+                    const card = this.createScriptCard(script);
+                    grid.appendChild(card);
+                });
+
+                this.showNoResults(false);
+            }
+
+            createScriptCard(script) {
+                const card = document.createElement('div');
+                card.className = 'script-card';
+                card.onclick = () => this.loadScript(script);
+
+                const gameName = script.isUniversal ? 'Universal' : (script.game?.name || 'Unknown');
+                const ownerName = script.owner?.username || 'Anonymous';
+                const views = script.views >= 1000 ? (script.views / 1000).toFixed(1) + 'k' : script.views.toString();
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="placeholder">🎮</div>
+                        ${script.game?.imageUrl ? `<img class="game-image" src="${script.game.imageUrl}" alt="${gameName}" onerror="this.style.display='none'">` : ''}
+                        <div class="game-name-overlay">
+                            <div class="game-name">${this.escapeHtml(gameName)}</div>
+                        </div>
+                        ${script.verified ? '<div class="verified-badge">✓ VERIFIED</div>' : ''}
+                    </div>
+                    <div class="card-content">
+                        <div class="script-title">${this.escapeHtml(script.title || 'Untitled Script')}</div>
+                        <div class="stats-row">
+                            <div class="owner-info">
+                                <div class="owner-avatar">
+                                    ${script.owner?.avatar ? `<img src="${script.owner.avatar}" alt="${ownerName}" onerror="this.parentElement.innerHTML='👤'">` : '👤'}
+                                </div>
+                                <div class="owner-name">${this.escapeHtml(ownerName)}</div>
+                            </div>
+                            <div class="views-info">
+                                <span>👁</span>
+                                <span>${views}</span>
+                            </div>
+                        </div>
+                        <div class="tags-row">
+                            ${script.key ? '<span class="tag key">🔑 Key</span>' : ''}
+                            ${script.isUniversal ? '<span class="tag universal">🌐 Universal</span>' : ''}
+                        </div>
+                    </div>
+                `;
+
+                return card;
+            }
+
+            loadScript(script) {
+                // Send script data back to C# WPF application
+                if (window.chrome && window.chrome.webview) {
+                    window.chrome.webview.postMessage({
+                        action: 'loadScript',
+                        title: script.title || 'Untitled Script',
+                        script: script.script || ''
+                    });
+                }
+            }
+
+            showLoading(show) {
+                document.getElementById('loadingIndicator').style.display = show ? 'flex' : 'none';
+            }
+
+            showNoResults(show) {
+                document.getElementById('noResults').style.display = show ? 'block' : 'none';
+            }
+
+            updateLoadMoreButton() {
+                const section = document.getElementById('loadMoreSection');
+                const btn = document.getElementById('loadMoreBtn');
+                
+                if (this.hasMorePages && this.currentQuery && this.scripts.length > 0) {
+                    section.style.display = 'block';
+                    btn.disabled = this.isLoading;
+                    btn.textContent = this.isLoading ? 'Loading...' : 'Load More';
+                } else {
+                    section.style.display = 'none';
+                }
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize the hub when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.communityHub = new CommunityHub();
+        });
+
+        // Expose search function globally for C# to call
+        window.searchCommunityScripts = function(query) {
+            if (window.communityHub) {
+                window.communityHub.searchScripts(query || '');
+            }
+        };
+    </script>
+</body>
+</html>
