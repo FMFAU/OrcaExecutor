@@ -1,19 +1,16 @@
-{
-  "scripts": [
-    {
-      "name": "Script Name",
-      "description": "Script description",
-      "raw_image": "https://example.com/image.png",
-      "trusted": true,
-      "script": "actual script content here"
-    }
-
-    {
-      "name": "Script Name2",
-      "description": "Script description",
-      "raw_image": "https://example.com/image.png",
-      "trusted": false,
-      "script": "actual script content here"
-    }
-  ]
-}
+window.OrcaHubData = [
+  {
+    "name": "Example Script",
+    "description": "This is a test",
+    "script": "print('hi')",
+    "trusted": true,
+    "raw_image": "https://orca-executor.vercel.app/OrcaHub/example.png"
+  },
+  {
+    "name": "Another Script",
+    "description": "Another test script",
+    "script": "console.log('hello')",
+    "trusted": false,
+    "raw_image": "https://orca-executor.vercel.app/OrcaHub/example2.png"
+  }
+];
