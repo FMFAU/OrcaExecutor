@@ -101,6 +101,8 @@
         display: flex;
         flex-direction: column;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
       }
 
       .script-card:hover {
@@ -148,6 +150,7 @@
         right: 8px;
         display: flex;
         gap: 4px;
+        z-index: 2;
       }
 
       .tag {
@@ -170,6 +173,7 @@
         padding: 8px 12px;
         display: flex;
         flex-direction: column;
+        z-index: 1;
       }
 
       .script-title {
@@ -251,45 +255,68 @@
         <p>The Orca Hub is currently empty</p>
       </div>
     </div>
-    <script src="https://orca-executor.vercel.app/OrcaHub/ScriptHub.json"></script>
     <script>
+      // Load ScriptHub.json dynamically
+      fetch('https://orca-executor.vercel.app/OrcaHub/ScriptHub.json')
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load ScriptHub.json');
+          return response.json();
+        })
+        .then(data => {
+          window.OrcaHubData = data;
+          renderHub();
+        })
+        .catch(error => {
+          console.error('Error loading ScriptHub.json:', error);
+          document.getElementById('loadingIndicator').style.display = 'none';
+          document.getElementById('noResults').style.display = 'block';
+        });
+
       function renderHub() {
         const loading = document.getElementById('loadingIndicator');
         const grid = document.getElementById('scriptsGrid');
         const noResults = document.getElementById('noResults');
         loading.style.display = 'none';
+
         if (!window.OrcaHubData || !window.OrcaHubData.length) {
           noResults.style.display = 'block';
           return;
         }
+
         grid.innerHTML = '';
         window.OrcaHubData.forEach(script => {
           const card = document.createElement('div');
           card.className = 'script-card';
-          card.onclick = () => loadScript(script);
+          card.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('Card clicked:', script.name);
+            loadScript(script);
+          });
           card.innerHTML = `
-		    <div class="card-header">
-		        <div class="placeholder" id="placeholder-${escapeHtml(script.name)}">
-		            <img class="placeholder-image" src="https://orca-executor.vercel.app/ScriptHub/Images/file-image.png" alt="No image">
-		        </div>
-		        ${script.raw_image ? `<img class="game-image" src="${script.raw_image}" alt="${script.name}" onload="document.getElementById('placeholder-${escapeHtml(script.name)}').style.display='none'" onerror="this.style.display='none'">` : ''}
-		        <div class="card-tags">
-		            ${script.trusted ? `<div class="tag trusted">TRUSTED</div>` : ''}
-		            ${script.universal ? `<div class="tag universal">UNIVERSAL</div>` : ''}
-		        </div>
-		    </div>
-		    <div class="card-content">
-		        <div class="script-title">${escapeHtml(script.name || 'Untitled Script')}</div>
-		        <div class="script-description">${escapeHtml(script.description || 'No description')}</div>
-		    </div>
-		`;
-
+            <div class="card-header">
+              <div class="placeholder" id="placeholder-${escapeHtml(script.name)}">
+                <img class="placeholder-image" src="https://orca-executor.vercel.app/ScriptHub/Images/file-image.png" alt="No image">
+              </div>
+              ${script.raw_image ? `<img class="game-image" src="${script.raw_image}" alt="${script.name}" onload="document.getElementById('placeholder-${escapeHtml(script.name)}').style.display='none'" onerror="this.style.display='none'">` : ''}
+              <div class="card-tags">
+                ${script.trusted ? `<div class="tag trusted">TRUSTED</div>` : ''}
+                ${script.universal ? `<div class="tag universal">UNIVERSAL</div>` : ''}
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="script-title">${escapeHtml(script.name || 'Untitled Script')}</div>
+              <div class="script-description">${escapeHtml(script.description || 'No description')}</div>
+            </div>
+          `;
           grid.appendChild(card);
         });
       }
 
       function loadScript(script) {
+        console.log('loadScript called for:', script.name);
         if (window.chrome && window.chrome.webview) {
+          console.log('Posting message to WebView2:', script);
           window.chrome.webview.postMessage({
             action: 'loadScriptToNewTab',
             name: script.name || 'Untitled Script',
@@ -299,15 +326,21 @@
             universal: script.universal || false,
             source: 'orca'
           });
+        } else {
+          console.error('window.chrome.webview is not available');
         }
       }
 
       function escapeHtml(text) {
         const div = document.createElement('div');
-        div.textContent = text;
+        div.textContent = text || '';
         return div.innerHTML;
       }
-      document.addEventListener('DOMContentLoaded', renderHub);
+
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('WebView2 available:', !!window.chrome?.webview);
+        renderHub();
+      });
     </script>
   </body>
 </html>
