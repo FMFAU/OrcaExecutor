@@ -1,16 +1,16 @@
 window.OrcaHubData = [
   {
-    "name": "Example Script",
-    "description": "This is a test",
+    "name": "Infinite Yield",
+    "description": "A Powerful Open-Source Admin built for all games.",
     "script": "print('hi')",
     "trusted": true,
     "raw_image": "https://orca-executor.vercel.app/OrcaHub/example.png"
   },
   {
-    "name": "Another Script",
-    "description": "Another test script",
-    "script": "console.log('hello')",
-    "trusted": false,
+    "name": "Dark Dex",
+    "description": "Open-Source Debug Suite",
+    "script": "print('test')",
+    "trusted": true,
     "raw_image": "https://orca-executor.vercel.app/OrcaHub/example2.png"
   }
 ];
