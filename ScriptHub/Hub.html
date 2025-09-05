@@ -25,7 +25,7 @@
 
         /* Header Section */
         .header {
-            margin-bottom: 24px;
+            margin-bottom: 0px; /* Connected to filters */
         }
 
         .header h1 {
@@ -40,13 +40,14 @@
             font-size: 14px;
         }
 
-        /* Filters Section */
+        /* Filters Section - Connected to header */
         .filters {
             background: #2D2D30;
-            border-radius: 12px;
+            border-radius: 0px 0px 12px 12px; /* Only bottom corners rounded */
             padding: 20px;
             margin-bottom: 24px;
             border: 1px solid #3E3E42;
+            border-top: none; /* Connected to header */
         }
 
         .filters h3 {
@@ -186,8 +187,12 @@
             align-items: center;
             justify-content: center;
             background: #46464B;
-            font-size: 32px;
-            color: #8C8C91;
+        }
+
+        .placeholder-image {
+            width: 48px;
+            height: 48px;
+            opacity: 0.6;
         }
 
         .game-name-overlay {
@@ -333,30 +338,12 @@
             color: #AAA;
         }
 
-        /* Load More Button */
-        .load-more {
+        /* Auto-loading indicator */
+        .auto-loading {
             text-align: center;
-            margin: 24px 0;
-        }
-
-        .load-more-btn {
-            background: #007ACC;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 20px;
+            color: #888;
             font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .load-more-btn:hover {
-            background: #0086E6;
-        }
-
-        .load-more-btn:disabled {
-            background: #555;
-            cursor: not-allowed;
         }
 
         /* Responsive */
@@ -376,15 +363,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>Community Scripts</h1>
-            <p>Discover and share scripts from the community</p>
-        </div>
-
-        <!-- Filters -->
         <div class="filters">
-            <h3>Filters</h3>
             <div class="filter-row">
                 <div class="filter-group">
                     <div class="checkbox" id="verifiedFilter"></div>
@@ -416,9 +395,10 @@
             <p>Try changing your search terms or filters</p>
         </div>
 
-        <!-- Load More -->
-        <div class="load-more" id="loadMoreSection" style="display: none;">
-            <button class="load-more-btn" id="loadMoreBtn">Load More</button>
+        <!-- Auto Loading Indicator -->
+        <div class="auto-loading" id="autoLoadingIndicator" style="display: none;">
+            <div class="spinner" style="width: 20px; height: 20px; margin: 0 auto 10px;"></div>
+            Loading more scripts...
         </div>
     </div>
 
@@ -441,6 +421,7 @@
 
             init() {
                 this.setupEventListeners();
+                this.setupInfiniteScroll();
                 this.loadScripts(); // Load trending by default
             }
 
@@ -456,15 +437,31 @@
                     this.toggleFilter('noKey');
                 });
 
-                // Load more button
-                document.getElementById('loadMoreBtn').addEventListener('click', () => {
-                    this.loadMoreScripts();
-                });
-
                 // Listen for search from C#
                 window.addEventListener('message', (event) => {
                     if (event.data && event.data.action === 'search') {
                         this.searchScripts(event.data.query);
+                    }
+                });
+            }
+
+            setupInfiniteScroll() {
+                let ticking = false;
+                
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                            const windowHeight = window.innerHeight;
+                            const documentHeight = document.documentElement.scrollHeight;
+                            
+                            // Load more when user is 200px from bottom
+                            if (scrollTop + windowHeight >= documentHeight - 200) {
+                                this.loadMoreScripts();
+                            }
+                            ticking = false;
+                        });
+                        ticking = true;
                     }
                 });
             }
@@ -537,7 +534,6 @@
                     if (scripts.length > 0) {
                         this.scripts.push(...scripts);
                         this.renderScripts(scripts);
-                        this.updateLoadMoreButton();
                     } else if (this.scripts.length === 0) {
                         this.showNoResults(true);
                     }
@@ -550,12 +546,14 @@
                 } finally {
                     this.isLoading = false;
                     this.showLoading(false);
+                    this.showAutoLoading(false);
                 }
             }
 
             async loadMoreScripts() {
                 if (!this.hasMorePages || this.isLoading || !this.currentQuery) return;
                 
+                this.showAutoLoading(true);
                 this.currentPage++;
                 await this.loadScripts();
             }
@@ -605,7 +603,9 @@
                 
                 card.innerHTML = `
                     <div class="card-header">
-                        <div class="placeholder">🎮</div>
+                        <div class="placeholder">
+                            <img class="placeholder-image" src="Images/file-image.png" alt="No image">
+                        </div>
                         ${script.game?.imageUrl ? `<img class="game-image" src="${script.game.imageUrl}" alt="${gameName}" onerror="this.style.display='none'">` : ''}
                         <div class="game-name-overlay">
                             <div class="game-name">${this.escapeHtml(gameName)}</div>
@@ -642,7 +642,14 @@
                     window.chrome.webview.postMessage({
                         action: 'loadScript',
                         title: script.title || 'Untitled Script',
-                        script: script.script || ''
+                        script: script.script || '',
+                        verified: script.verified || false,
+                        owner: script.owner?.username || 'Anonymous',
+                        game: script.isUniversal ? 'Universal' : (script.game?.name || 'Unknown'),
+                        views: script.views || 0,
+                        key: script.key || false,
+                        scriptId: script._id || '',
+                        isUniversal: script.isUniversal || false
                     });
                 }
             }
@@ -651,21 +658,12 @@
                 document.getElementById('loadingIndicator').style.display = show ? 'flex' : 'none';
             }
 
-            showNoResults(show) {
-                document.getElementById('noResults').style.display = show ? 'block' : 'none';
+            showAutoLoading(show) {
+                document.getElementById('autoLoadingIndicator').style.display = show ? 'block' : 'none';
             }
 
-            updateLoadMoreButton() {
-                const section = document.getElementById('loadMoreSection');
-                const btn = document.getElementById('loadMoreBtn');
-                
-                if (this.hasMorePages && this.currentQuery && this.scripts.length > 0) {
-                    section.style.display = 'block';
-                    btn.disabled = this.isLoading;
-                    btn.textContent = this.isLoading ? 'Loading...' : 'Load More';
-                } else {
-                    section.style.display = 'none';
-                }
+            showNoResults(show) {
+                document.getElementById('noResults').style.display = show ? 'block' : 'none';
             }
 
             escapeHtml(text) {
