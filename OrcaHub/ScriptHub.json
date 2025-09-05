@@ -1,0 +1,19 @@
+{
+  "scripts": [
+    {
+      "name": "Script Name",
+      "description": "Script description",
+      "raw_image": "https://example.com/image.png",
+      "trusted": true,
+      "script": "actual script content here"
+    }
+
+    {
+      "name": "Script Name2",
+      "description": "Script description",
+      "raw_image": "https://example.com/image.png",
+      "trusted": false,
+      "script": "actual script content here"
+    }
+  ]
+}
