@@ -397,7 +397,7 @@
         <div class="scripts-grid" id="scriptsGrid"></div>
 
         <div class="no-results" id="noResults" style="display: none;">
-            <div class="icon"><img src="Images/bug.png" alt="Bug"></div>
+            <div class="icon">📭</div>
             <h3>Nothing found</h3>
             <p>Try changing your search terms or filters</p>
         </div>
@@ -616,11 +616,7 @@
                         <div class="stats-row">
                             <div class="owner-info">
                                 <div class="owner-avatar">
-                                    <img 
-                                      src="${script.owner?.avatar || 'Images/User.png'}" 
-                                      alt="${ownerName}" 
-                                      onerror="this.onerror=null; this.src='Images/User.png';"
-                                    >
+                                    ${script.owner?.avatar ? `<img src="${script.owner.avatar}" alt="${ownerName}" onerror="this.parentElement.innerHTML='👤'">` : '👤'}
                                 </div>
                                 <div class="owner-name">${this.escapeHtml(ownerName)}</div>
                             </div>
@@ -630,8 +626,8 @@
                             </div>
                         </div>
                         <div class="tags-row">
-                            ${script.key ? '<span class="tag key"><img src="Images/key-round.png" alt="Key" class="key-icon"></span>' : ''}
-                            ${script.isUniversal ? '<span class="tag universal"><img src="Images/earth.png" alt="Universal"></span>' : ''}
+                            ${script.key ? '<span class="tag key">🔑 Key</span>' : ''}
+                            ${script.isUniversal ? '<span class="tag universal">🌐 Universal</span>' : ''}
                         </div>
                     </div>
                 `;
