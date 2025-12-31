@@ -2724,11 +2724,28 @@ function setupAutosave() {
       }
       editor.onDidChangeModelContent(function (e) {
             try {
-                this.luaparse.parse(editor.getValue());
-                monaco.editor.setModelMarkers(editor.getModel(),'luaparse');
+                const code = editor.getValue();
+                // Preprocess executor-style brace templates (e.g. {plr.Name} Hey) into quoted strings for linting
+                // This only affects the linting pass, not the editor content itself.
+                const preprocessed = code.replace(/\{[^}]+\}(?:\s+[^\n;]+)?/g, function (m) { return '"' + m.replace(/"/g, '\\"') + '"'; });
+                this.luaparse.parse(preprocessed);
+                // clear markers for this provider
+                monaco.editor.setModelMarkers(editor.getModel(), 'luaparse', []);
             }
-            catch(Err) {
-                monaco.editor.setModelMarkers(editor.getModel(),'luaparse',[{
+            catch (Err) {
+                // If the error is on a line that contains a brace-template, suppress it to avoid false positives
+                try {
+                    const model = editor.getModel();
+                    const lineContent = model.getLineContent(Err.line);
+                    if (lineContent && /\{[^}]+\}/.test(lineContent)) {
+                        monaco.editor.setModelMarkers(editor.getModel(), 'luaparse', []);
+                        return;
+                    }
+                } catch (e) {
+                    // fall through to reporting the error
+                }
+
+                monaco.editor.setModelMarkers(editor.getModel(), 'luaparse', [{
                     startLineNumber: Err.line,
                     startColumn: Err.column,
                     endLineNumber: Err.line,
@@ -2816,7 +2833,7 @@ function setupAutosave() {
 				});
 			}
 			async function load() {
-				var docs = await(await fetch('https://raw.githubusercontent.com/FMFAU/OrcaExecutor/refs/heads/main/Monaco/lib.json')).json();
+				var docs = await(await fetch('https://raw.githubusercontent.com/iceycold3/monaco/refs/heads/main/lib.json')).json();
 
 				for (var prop in docs) {
   					  for(var item in docs[prop])
@@ -2826,8 +2843,199 @@ function setupAutosave() {
 					  }
 				}
 
-				for (const Key of ["_G", "_VERSION", "Enum", "game", "plugin", "shared", "script", "workspace", "DebuggerManager", "elapsedTime", "LoadLibrary", "PluginManager", "settings", "tick", "time", "typeof", "UserSettings"])
-                    AddIntellisense(Key, "Keyword", Key, Key);
+                // ========== UNC FUNCTION LISTS (added) ==========
+                const uncCore = [
+                    { name: "identifyexecutor", desc: "Returns executor name and version", type: "Function" },
+                    { name: "getexecutorname", desc: "Returns the name of the current executor", type: "Function" },
+                    { name: "isexecutorclosure", desc: "Checks if function is an executor closure", type: "Function" },
+                    { name: "checkcaller", desc: "Returns true if called by executor", type: "Function" },
+                    { name: "clonefunction", desc: "Creates a copy of a function", type: "Function" },
+                    { name: "getcallingscript", desc: "Returns the script that called the function", type: "Function" },
+                    { name: "getscriptclosure", desc: "Gets the main function of a script", type: "Function" },
+                    { name: "hookfunction", desc: "Hooks and replaces a function", type: "Function" },
+                    { name: "restorefunction", desc: "Restores a hooked function", type: "Function" },
+                    { name: "newcclosure", desc: "Creates a new C closure", type: "Function" },
+                    { name: "islclosure", desc: "Checks if value is a Lua closure", type: "Function" },
+                    { name: "iscclosure", desc: "Checks if value is a C closure", type: "Function" },
+                    { name: "hookmetamethod", desc: "Hooks a metatable method", type: "Function" },
+                    { name: "getnamecallmethod", desc: "Gets the current namecall method", type: "Function" },
+                    { name: "isreadonly", desc: "Checks if table is read-only", type: "Function" },
+                    { name: "setreadonly", desc: "Sets table read-only status", type: "Function" },
+                    { name: "iswriteable", desc: "Checks if table is writeable", type: "Function" },
+                    { name: "makewriteable", desc: "Makes table writeable", type: "Function" },
+                    { name: "makereadonly", desc: "Makes table read-only", type: "Function" }
+                ];
+
+                const filesystemFuncs = [
+                    { name: "readfile", desc: "Reads content from a file", type: "Function" },
+                    { name: "writefile", desc: "Writes content to a file", type: "Function" },
+                    { name: "appendfile", desc: "Appends content to a file", type: "Function" },
+                    { name: "loadfile", desc: "Loads and executes a Lua file", type: "Function" },
+                    { name: "listfiles", desc: "Lists all files in a directory", type: "Function" },
+                    { name: "isfile", desc: "Checks if path is a file", type: "Function" },
+                    { name: "isfolder", desc: "Checks if path is a folder", type: "Function" },
+                    { name: "makefolder", desc: "Creates a new folder", type: "Function" },
+                    { name: "delfolder", desc: "Deletes a folder", type: "Function" },
+                    { name: "delfile", desc: "Deletes a file", type: "Function" }
+                ];
+
+                const scriptFuncs = [
+                    { name: "getscripts", desc: "Returns all scripts in the game", type: "Function" },
+                    { name: "getloadedmodules", desc: "Returns all loaded ModuleScripts", type: "Function" },
+                    { name: "getrunningscripts", desc: "Returns all running scripts", type: "Function" },
+                    { name: "getsenv", desc: "Gets script environment", type: "Function" },
+                    { name: "getgenv", desc: "Gets global environment", type: "Function" },
+                    { name: "getrenv", desc: "Gets Roblox environment", type: "Function" },
+                    { name: "getinstances", desc: "Gets all instances in the game", type: "Function" },
+                    { name: "getnilinstances", desc: "Gets instances parented to nil", type: "Function" },
+                    { name: "getgc", desc: "Gets garbage collected objects", type: "Function" },
+                    { name: "getcallstack", desc: "Returns the current call stack", type: "Function" }
+                ];
+
+                const debugFuncs = [
+                    { name: "debug.getinfo", desc: "Gets debug information about a function", type: "Method" },
+                    { name: "debug.getupvalue", desc: "Gets an upvalue from a function", type: "Method" },
+                    { name: "debug.getupvalues", desc: "Gets all upvalues from a function", type: "Method" },
+                    { name: "debug.setupvalue", desc: "Sets an upvalue in a function", type: "Method" },
+                    { name: "debug.setconstant", desc: "Sets a constant in a function", type: "Method" },
+                    { name: "debug.getconstant", desc: "Gets a constant from a function", type: "Method" },
+                    { name: "debug.getconstants", desc: "Gets all constants from a function", type: "Method" },
+                    { name: "debug.getproto", desc: "Gets a proto from a function", type: "Method" },
+                    { name: "debug.getprotos", desc: "Gets all protos from a function", type: "Method" },
+                    { name: "debug.getstack", desc: "Gets stack information", type: "Method" },
+                    { name: "debug.setstack", desc: "Sets stack values", type: "Method" },
+                    { name: "debug.getregistry", desc: "Gets the Lua registry table", type: "Method" }
+                ];
+
+                const metatableFuncs = [
+                    { name: "getrawmetatable", desc: "Gets raw metatable of an object", type: "Function" },
+                    { name: "setrawmetatable", desc: "Sets raw metatable of an object", type: "Function" }
+                ];
+
+                const consoleFuncs = [
+                    { name: "rconsoleprint", desc: "Prints to external console", type: "Function" },
+                    { name: "rconsoleclear", desc: "Clears external console", type: "Function" },
+                    { name: "rconsoleinput", desc: "Gets input from console", type: "Function" },
+                    { name: "rconsolename", desc: "Sets console window title", type: "Function" },
+                    { name: "rconsolesettitle", desc: "Sets console title", type: "Function" },
+                    { name: "consolecreate", desc: "Creates a console window", type: "Function" },
+                    { name: "consoledestroy", desc: "Destroys console window", type: "Function" },
+                    { name: "consoleinput", desc: "Gets console input", type: "Function" },
+                    { name: "consoleprint", desc: "Prints to console", type: "Function" },
+                    { name: "consoleclear", desc: "Clears console", type: "Function" },
+                    { name: "printconsole", desc: "Prints to console", type: "Function" },
+                    { name: "messagebox", desc: "Shows a message box (replaces 'message')", type: "Function" },
+                    { name: "messageboxasync", desc: "Shows async message box", type: "Function" }
+                ];
+
+                const inputFuncs = [
+                    { name: "isrbxactive", desc: "Checks if Roblox window is active", type: "Function" },
+                    { name: "isgameactive", desc: "Checks if game is active", type: "Function" },
+                    { name: "mouse1click", desc: "Simulates left mouse click", type: "Function" },
+                    { name: "mouse1press", desc: "Simulates left mouse press", type: "Function" },
+                    { name: "mouse1release", desc: "Simulates left mouse release", type: "Function" },
+                    { name: "mouse2click", desc: "Simulates right mouse click", type: "Function" },
+                    { name: "mouse2press", desc: "Simulates right mouse press", type: "Function" },
+                    { name: "mouse2release", desc: "Simulates right mouse release", type: "Function" },
+                    { name: "mousemoveabs", desc: "Moves mouse to absolute position", type: "Function" },
+                    { name: "mousemoverel", desc: "Moves mouse relative to current position", type: "Function" },
+                    { name: "mousescroll", desc: "Simulates mouse scroll", type: "Function" }
+                ];
+
+                const drawingFuncs = [
+                    { name: "Drawing.new", desc: "Creates a new drawing object", type: "Constructor" },
+                    { name: "Drawing.Fonts", desc: "Available drawing fonts", type: "Property" },
+                    { name: "isrenderobj", desc: "Checks if object is a render object", type: "Function" },
+                    { name: "getrenderproperty", desc: "Gets a render property", type: "Function" },
+                    { name: "setrenderproperty", desc: "Sets a render property", type: "Function" },
+                    { name: "cleardrawcache", desc: "Clears drawing cache", type: "Function" }
+                ];
+
+                const websocketFuncs = [
+                    { name: "WebSocket.connect", desc: "Connects to a WebSocket", type: "Method" },
+                    { name: "websocket_connect", desc: "Connects to a WebSocket", type: "Function" }
+                ];
+
+                const cryptFuncs = [
+                    { name: "crypt.encrypt", desc: "Encrypts data", type: "Method" },
+                    { name: "crypt.decrypt", desc: "Decrypts data", type: "Method" },
+                    { name: "crypt.base64encode", desc: "Encodes to base64", type: "Method" },
+                    { name: "crypt.base64decode", desc: "Decodes from base64", type: "Method" },
+                    { name: "crypt.generatekey", desc: "Generates encryption key", type: "Method" },
+                    { name: "crypt.generatebytes", desc: "Generates random bytes", type: "Method" },
+                    { name: "crypt.hash", desc: "Hashes data", type: "Method" }
+                ];
+
+                const httpFuncs = [
+                    { name: "request", desc: "Makes an HTTP request", type: "Function" },
+                    { name: "http_request", desc: "Makes an HTTP request", type: "Function" },
+                    { name: "syn.request", desc: "Synapse HTTP request", type: "Method" },
+                    { name: "http.request", desc: "HTTP request", type: "Method" }
+                ];
+
+                const miscFuncs = [
+                    { name: "setclipboard", desc: "Sets clipboard content", type: "Function" },
+                    { name: "getclipboard", desc: "Gets clipboard content", type: "Function" },
+                    { name: "setfpscap", desc: "Sets FPS cap", type: "Function" },
+                    { name: "getfpscap", desc: "Gets current FPS cap", type: "Function" },
+                    { name: "getping", desc: "Gets current ping", type: "Function" },
+                    { name: "getfps", desc: "Gets current FPS", type: "Function" },
+                    { name: "gethui", desc: "Gets hidden UI container", type: "Function" },
+                    { name: "gethiddengui", desc: "Gets hidden GUI", type: "Function" },
+                    { name: "sethiddenproperty", desc: "Sets a hidden property", type: "Function" },
+                    { name: "gethiddenproperty", desc: "Gets a hidden property", type: "Function" },
+                    { name: "setsimulationradius", desc: "Sets simulation radius", type: "Function" },
+                    { name: "getspecialinfo", desc: "Gets special instance info", type: "Function" },
+                    { name: "saveinstance", desc: "Saves instance to file", type: "Function" }
+                ];
+
+                const cacheFuncs = [
+                    { name: "cache.invalidate", desc: "Invalidates cache for an instance", type: "Method" },
+                    { name: "cache.iscached", desc: "Checks if instance is cached", type: "Method" },
+                    { name: "cache.replace", desc: "Replaces cached instance", type: "Method" },
+                    { name: "cloneref", desc: "Clones an instance reference", type: "Function" },
+                    { name: "compareinstances", desc: "Compares two instances", type: "Function" }
+                ];
+
+                const bit32Funcs = [
+                    { name: "bit32.arshift", desc: "Arithmetic right shift", type: "Method" },
+                    { name: "bit32.band", desc: "Bitwise AND", type: "Method" },
+                    { name: "bit32.bnot", desc: "Bitwise NOT", type: "Method" },
+                    { name: "bit32.bor", desc: "Bitwise OR", type: "Method" },
+                    { name: "bit32.btest", desc: "Bitwise test", type: "Method" },
+                    { name: "bit32.bxor", desc: "Bitwise XOR", type: "Method" },
+                    { name: "bit32.extract", desc: "Extracts bits", type: "Method" },
+                    { name: "bit32.lrotate", desc: "Left rotate", type: "Method" },
+                    { name: "bit32.lshift", desc: "Left shift", type: "Method" },
+                    { name: "bit32.replace", desc: "Replaces bits", type: "Method" },
+                    { name: "bit32.rrotate", desc: "Right rotate", type: "Method" },
+                    { name: "bit32.rshift", desc: "Right shift", type: "Method" },
+                    { name: "bit32.countlz", desc: "Count leading zeros", type: "Method" },
+                    { name: "bit32.countrz", desc: "Count trailing zeros", type: "Method" }
+                ];
+
+                const tableExtensions = [
+                    { name: "table.clear", desc: "Clears all table entries", type: "Method" },
+                    { name: "table.create", desc: "Creates a table with size", type: "Method" },
+                    { name: "table.find", desc: "Finds value in table", type: "Method" },
+                    { name: "table.pack", desc: "Packs values into table", type: "Method" },
+                    { name: "table.unpack", desc: "Unpacks table values", type: "Method" },
+                    { name: "table.move", desc: "Moves table elements", type: "Method" },
+                    { name: "table.clone", desc: "Creates shallow copy of table", type: "Method" }
+                ];
+
+                const allUNCFunctions = [
+                    ...uncCore, ...filesystemFuncs, ...scriptFuncs, ...debugFuncs,
+                    ...metatableFuncs, ...consoleFuncs, ...inputFuncs, ...drawingFuncs,
+                    ...websocketFuncs, ...cryptFuncs, ...httpFuncs, ...miscFuncs,
+                    ...cacheFuncs, ...bit32Funcs, ...tableExtensions
+                ];
+
+                allUNCFunctions.forEach(func => {
+                    AddIntellisense(func.name, func.type, func.desc, func.name);
+                });
+
+                // ========== EXISTING ROBLOX GLOBALS (Keep your existing code) ==========
 
 				for (const Key of ["and", "break", "do", "else", "elseif", "end", "false", "for", "function", "if", "in", "local", "nil", "not", "or", "repeat", "return", "then", "true", "until", "while"])
                     AddIntellisense(Key, "Variable", Key, Key);
@@ -2838,7 +3046,7 @@ function setupAutosave() {
 				for (const Key of ["Drawing", "debug", "Instance", "Color3", "Vector3", "Vector2", "BrickColor", "math", "table", "string", "coroutine", "Humanoid", "ClickDetector", "LocalScript", "Model", "ModuleScript", "Mouse", "Part", "Player", "Script", "Tool", "RunService", "UserInputService", "Workspace"])
 					AddIntellisense(Key, "Class", Key, Key);
 
-				for (const Key of ["print", "warn", "wait", "info", "printidentity", "assert", "collectgarbage", "error", "getfenv", "getmetatable", "setmetatable", "ipairs", "loadfile", "loadstring", "newproxy", "next", "pairs", "pcall", "spawn", "rawequal", "rawget", "rawset", "select", "tonumber", "tostring", "type", "unpack", "xpcall", "delay", "stats", ":Remove()", ":BreakJoints()", ":GetChildren()", ":FindFirstChild()", ":FireServer()", ":InvokeServer()", ":ClearAllChildren()", ":Clone()", ":Destroy()", ":FindFirstAncestor()", ":FindFirstAncestorOfClass()", ":FindFirstAncestorWhichIsA()", ":FindFirstChildOfClass()", ":FindFirstChildWhichIsA()", ":GetDebugId()", ":GetDescendants()", ":GetFullName()", ":IsA()", ":GetPropertyChangedSignal()", ":IsAncestorOf()", ":IsDescendantOf()", ":WaitForChild()", ":Connect()", ":AncestryChanged()", ":Changed()", ":ChildAdded()", ":ChildRemoved()", ":DescendantAdded()", ":DescendantRemoving()", ":GetService()", ":GetObjects()", ":HttpGet()", ":Wait()"])
+for (const Key of ["print", "warn", "wait", "info", "printidentity", "assert", "collectgarbage", "error", "getfenv", "getmetatable", "setmetatable", "ipairs", "loadfile", "loadstring", "newproxy", "next", "pairs", "pcall", "spawn", "rawequal", "rawget", "rawset", "select", "tonumber", "tostring", "type", "unpack", "xpcall", "delay", "stats", "messagebox", "hookmetamethod", "hookfunction", "getgenv", "getreg", "getgc", "setclipboard", "syn.toast", ":Remove()", ":BreakJoints()", ":GetChildren()", ":FindFirstChild()", ":FireServer()", ":InvokeServer()", ":ClearAllChildren()", ":Clone()", ":Destroy()", ":FindFirstAncestor()", ":FindFirstAncestorOfClass()", ":FindFirstAncestorWhichIsA()", ":FindFirstChildOfClass()", ":FindFirstChildWhichIsA()", ":GetDebugId()", ":GetDescendants()", ":GetFullName()", ":IsA()", ":GetPropertyChangedSignal()", ":IsAncestorOf()", ":IsDescendantOf()", ":WaitForChild()", ":Connect()", ":AncestryChanged()", ":Changed()", ":ChildAdded()", ":ChildRemoved()", ":DescendantAdded()", ":DescendantRemoving()", ":GetService()", ":GetObjects()", ":HttpGet()", ":Wait()"])
                     AddIntellisense(Key, "Function", Key, Key.includes(":") ? Key.substring(1, Key.length) : Key);
 
                 for (const Key of ["Visible", "Color", "Transparency", "Thickness", "From", "To", "Text", "Size", "Center", "Outline", "OutlineColor", "Position", "TextBounds", "Font", "Data", "Rounding", "NumSides", "Radius", "Filled", "PointA", "PointB", "PointC", "PointD"])
@@ -2858,18 +3066,3 @@ function setupAutosave() {
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
