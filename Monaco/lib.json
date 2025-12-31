@@ -1,5 +1,275 @@
 {
   "global environment": {
+      "identifyexecutor": {
+          "label": "identifyexecutor();",
+          "type": "Function",
+          "description": "Returns executor name and version",
+          "insert": "identifyexecutor"
+      },
+      "getexecutorname": {
+          "label": "getexecutorname();",
+          "type": "Function",
+          "description": "Returns the name of the current executor",
+          "insert": "getexecutorname"
+      },
+      "isexecutorclosure": {
+          "label": "isexecutorclosure(func);",
+          "type": "Function",
+          "description": "Checks if function is an executor closure",
+          "insert": "isexecutorclosure"
+      },
+      "clonefunction": {
+          "label": "clonefunction(func);",
+          "type": "Function",
+          "description": "Creates a copy of a function",
+          "insert": "clonefunction"
+      },
+      "getscriptclosure": {
+          "label": "getscriptclosure(script);",
+          "type": "Function",
+          "description": "Gets the main function of a script",
+          "insert": "getscriptclosure"
+      },
+      "restorefunction": {
+          "label": "restorefunction(func);",
+          "type": "Function",
+          "description": "Restores a hooked function",
+          "insert": "restorefunction"
+      },
+      "getnamecallmethod": {
+          "label": "getnamecallmethod();",
+          "type": "Function",
+          "description": "Gets the current namecall method",
+          "insert": "getnamecallmethod"
+      },
+      "iswriteable": {
+          "label": "iswriteable(table);",
+          "type": "Function",
+          "description": "Checks if table is writeable",
+          "insert": "iswriteable"
+      },
+      "makewriteable": {
+          "label": "makewriteable(table);",
+          "type": "Function",
+          "description": "Makes table writeable",
+          "insert": "makewriteable"
+      },
+      "makereadonly": {
+          "label": "makereadonly(table);",
+          "type": "Function",
+          "description": "Makes table read-only",
+          "insert": "makereadonly"
+      },
+      "getscripts": {
+          "label": "getscripts();",
+          "type": "Function",
+          "description": "Returns all scripts in the game",
+          "insert": "getscripts"
+      },
+      "getloadedmodules": {
+          "label": "getloadedmodules();",
+          "type": "Function",
+          "description": "Returns all loaded ModuleScripts",
+          "insert": "getloadedmodules"
+      },
+      "getrunningscripts": {
+          "label": "getrunningscripts();",
+          "type": "Function",
+          "description": "Returns all running scripts",
+          "insert": "getrunningscripts"
+      },
+      "getcallstack": {
+          "label": "getcallstack();",
+          "type": "Function",
+          "description": "Returns the current call stack",
+          "insert": "getcallstack"
+      },
+      "getrawmetatable": {
+          "label": "getrawmetatable(object);",
+          "type": "Function",
+          "description": "Gets raw metatable of an object",
+          "insert": "getrawmetatable"
+      },
+      "setrawmetatable": {
+          "label": "setrawmetatable(object, metatable);",
+          "type": "Function",
+          "description": "Sets raw metatable of an object",
+          "insert": "setrawmetatable"
+      },
+      "rconsoleinput": {
+          "label": "rconsoleinput();",
+          "type": "Function",
+          "description": "Gets input from console",
+          "insert": "rconsoleinput"
+      },
+      "rconsolesettitle": {
+          "label": "rconsolesettitle(title);",
+          "type": "Function",
+          "description": "Sets console title",
+          "insert": "rconsolesettitle"
+      },
+      "consolecreate": {
+          "label": "consolecreate();",
+          "type": "Function",
+          "description": "Creates a console window",
+          "insert": "consolecreate"
+      },
+      "consoledestroy": {
+          "label": "consoledestroy();",
+          "type": "Function",
+          "description": "Destroys console window",
+          "insert": "consoledestroy"
+      },
+      "consoleinput": {
+          "label": "consoleinput();",
+          "type": "Function",
+          "description": "Gets console input",
+          "insert": "consoleinput"
+      },
+      "consoleprint": {
+          "label": "consoleprint(message);",
+          "type": "Function",
+          "description": "Prints to console",
+          "insert": "consoleprint"
+      },
+      "consoleclear": {
+          "label": "consoleclear();",
+          "type": "Function",
+          "description": "Clears console",
+          "insert": "consoleclear"
+      },
+      "printconsole": {
+          "label": "printconsole(message);",
+          "type": "Function",
+          "description": "Prints to console",
+          "insert": "printconsole"
+      },
+      "messagebox": {
+          "label": "messagebox(text, title, buttons);",
+          "type": "Function",
+          "description": "Shows a message box",
+          "insert": "messagebox"
+      },
+      "messageboxasync": {
+          "label": "messageboxasync(text, title, buttons);",
+          "type": "Function",
+          "description": "Shows async message box",
+          "insert": "messageboxasync"
+      },
+      "isgameactive": {
+          "label": "isgameactive();",
+          "type": "Function",
+          "description": "Checks if game is active",
+          "insert": "isgameactive"
+      },
+      "mousemoveabs": {
+          "label": "mousemoveabs(x, y);",
+          "type": "Function",
+          "description": "Moves mouse to absolute position",
+          "insert": "mousemoveabs"
+      },
+      "isrenderobj": {
+          "label": "isrenderobj(object);",
+          "type": "Function",
+          "description": "Checks if object is a render object",
+          "insert": "isrenderobj"
+      },
+      "getrenderproperty": {
+          "label": "getrenderproperty(object, property);",
+          "type": "Function",
+          "description": "Gets a render property",
+          "insert": "getrenderproperty"
+      },
+      "setrenderproperty": {
+          "label": "setrenderproperty(object, property, value);",
+          "type": "Function",
+          "description": "Sets a render property",
+          "insert": "setrenderproperty"
+      },
+      "cleardrawcache": {
+          "label": "cleardrawcache();",
+          "type": "Function",
+          "description": "Clears drawing cache",
+          "insert": "cleardrawcache"
+      },
+      "websocket_connect": {
+          "label": "websocket_connect(url);",
+          "type": "Function",
+          "description": "Connects to a WebSocket",
+          "insert": "websocket_connect"
+      },
+      "request": {
+          "label": "request(options);",
+          "type": "Function",
+          "description": "Makes an HTTP request",
+          "insert": "request"
+      },
+      "http_request": {
+          "label": "http_request(options);",
+          "type": "Function",
+          "description": "Makes an HTTP request",
+          "insert": "http_request"
+      },
+      "getclipboard": {
+          "label": "getclipboard();",
+          "type": "Function",
+          "description": "Gets clipboard content",
+          "insert": "getclipboard"
+      },
+      "getping": {
+          "label": "getping();",
+          "type": "Function",
+          "description": "Gets current ping",
+          "insert": "getping"
+      },
+      "getfps": {
+          "label": "getfps();",
+          "type": "Function",
+          "description": "Gets current FPS",
+          "insert": "getfps"
+      },
+      "gethui": {
+          "label": "gethui();",
+          "type": "Function",
+          "description": "Gets hidden UI container",
+          "insert": "gethui"
+      },
+      "gethiddengui": {
+          "label": "gethiddengui();",
+          "type": "Function",
+          "description": "Gets hidden GUI",
+          "insert": "gethiddengui"
+      },
+      "setsimulationradius": {
+          "label": "setsimulationradius(radius);",
+          "type": "Function",
+          "description": "Sets simulation radius",
+          "insert": "setsimulationradius"
+      },
+      "getspecialinfo": {
+          "label": "getspecialinfo(instance);",
+          "type": "Function",
+          "description": "Gets special instance info",
+          "insert": "getspecialinfo"
+      },
+      "cloneref": {
+          "label": "cloneref(instance);",
+          "type": "Function",
+          "description": "Clones an instance reference",
+          "insert": "cloneref"
+      },
+      "compareinstances": {
+          "label": "compareinstances(instance1, instance2);",
+          "type": "Function",
+          "description": "Compares two instances",
+          "insert": "compareinstances"
+      },
+      "delfile": {
+          "label": "delfile(filename);",
+          "type": "Function",
+          "description": "Deletes a file",
+          "insert": "delfile"
+      },
       "firesignal": {
           "label": "firesignal(Signal, Args);",
           "type": "Method",
@@ -31,12 +301,6 @@
           "description": "Returns the User's HWID, changes between PCs.",
           "insert": "gethwid"
       },
-      "message": {
-          "label": "message(text);",
-          "type": "Method",
-          "description": "Creates a message box with parameters text",
-          "insert": "message"
-      },
       "setfflag": {
           "label": "setfflag(FFlag, Value);",
           "type": "Method",
@@ -50,7 +314,7 @@
           "insert": "getinstances"
       },
       "getcallingscript": {
-          "label": "checkcaller();",
+          "label": "getcallingscript();",
           "type": "Method",
           "description": "Gets the script that is calling this function.",
           "insert": "getcallingscript"
@@ -79,12 +343,6 @@
           "description": "Return a random string with num length.",
           "insert": "randomstring"
       },
-      "request": {
-          "label": "request(options);",
-          "type": "Method",
-          "description": "Sends a http request with parameters in options.",
-          "insert": "request"
-      },
       "loadstring": {
           "label": "loadstring(chunk, chunk_name);",
           "type": "Method",
@@ -94,25 +352,25 @@
       "setthreadcontext": {
           "label": "setthreadcontext(level);",
           "type": "Method",
-          "description": "Sets the current thread’s context level to level.",
+          "description": "Sets the current thread's context level to level.",
           "insert": "setthreadcontext"
       },
       "getthreadcontext": {
           "label": "getthreadcontext();",
           "type": "Method",
-          "description": "Returns the current thread’s security context level.",
+          "description": "Returns the current thread's security context level.",
           "insert": "getthreadcontext"
       },
       "setthreadidentity": {
         "label": "setthreadidentity(level);",
         "type": "Method",
-        "description": "Sets the current thread’s level to level.",
+        "description": "Sets the current thread's level to level.",
         "insert": "setthreadidentity"
     },
     "getthreadidentity": {
         "label": "getthreadidentity();",
         "type": "Method",
-        "description": "Returns the current thread’s security level.",
+        "description": "Returns the current thread's security level.",
         "insert": "getthreadidentity"
     },
       "mousescroll": {
@@ -238,13 +496,13 @@
       "getgc": {
           "label": "getgc();",
           "type": "Method",
-          "description": "Returns a table containing Lua’s garbage collector.",
+          "description": "Returns a table containing Lua's garbage collector.",
           "insert": "getgc"
       },
       "mousemoverel": {
           "label": "mousemoverel(x, y);",
           "type": "Method",
-          "description": "Moves the mouse by x and y relative to the mouse’s current position.\nKeep in mind that a positive y value moves the mouse down.",
+          "description": "Moves the mouse by x and y relative to the mouse's current position.\nKeep in mind that a positive y value moves the mouse down.",
           "insert": "mousemoverel"
       },
       "iscclosure": {
@@ -307,7 +565,6 @@
           "description": "Simulates the right mouse button being clicked one time.",
           "insert": "mouse2click"
       },
-
       "getreg": {
           "label": "getreg();",
           "type": "Method",
@@ -319,7 +576,7 @@
           "type": "Method",
           "description": "Copies data to the clipboard.",
           "insert": "setclipboard"
-      }
+      },
       "makefolder": {
           "label": "makefolder(path);",
           "type": "Method",
@@ -423,6 +680,72 @@
           "type": "Method",
           "description": "Returns a table containing the following information about the function:\n + source - The name of the script the function was defined in\n+ what - Where the function originates from (Lua or C/C++)\n+ func - The passed in function\n+ short_src - The name of the script in a format that can be used in error messages\n+ name - The name of the function\n+ nups - The number of upvalues in the function\nAlthough more information is given, that information is pointless since it has the same values for every function.",
           "insert": "debug.getinfo"
+      },
+      "debug.getupvalue": {
+          "label": "debug.getupvalue(func, index);",
+          "type": "Method",
+          "description": "Gets an upvalue from a function",
+          "insert": "debug.getupvalue"
+      },
+      "debug.getupvalues": {
+          "label": "debug.getupvalues(func);",
+          "type": "Method",
+          "description": "Gets all upvalues from a function",
+          "insert": "debug.getupvalues"
+      },
+      "debug.setupvalue": {
+          "label": "debug.setupvalue(func, index, value);",
+          "type": "Method",
+          "description": "Sets an upvalue in a function",
+          "insert": "debug.setupvalue"
+      },
+      "debug.setconstant": {
+          "label": "debug.setconstant(func, index, value);",
+          "type": "Method",
+          "description": "Sets a constant in a function",
+          "insert": "debug.setconstant"
+      },
+      "debug.getconstant": {
+          "label": "debug.getconstant(func, index);",
+          "type": "Method",
+          "description": "Gets a constant from a function",
+          "insert": "debug.getconstant"
+      },
+      "debug.getconstants": {
+          "label": "debug.getconstants(func);",
+          "type": "Method",
+          "description": "Gets all constants from a function",
+          "insert": "debug.getconstants"
+      },
+      "debug.getproto": {
+          "label": "debug.getproto(func, index);",
+          "type": "Method",
+          "description": "Gets a proto from a function",
+          "insert": "debug.getproto"
+      },
+      "debug.getprotos": {
+          "label": "debug.getprotos(func);",
+          "type": "Method",
+          "description": "Gets all protos from a function",
+          "insert": "debug.getprotos"
+      },
+      "debug.getstack": {
+          "label": "debug.getstack(level);",
+          "type": "Method",
+          "description": "Gets stack information",
+          "insert": "debug.getstack"
+      },
+      "debug.setstack": {
+          "label": "debug.setstack(level, index, value);",
+          "type": "Method",
+          "description": "Sets stack values",
+          "insert": "debug.setstack"
+      },
+      "debug.getregistry": {
+          "label": "debug.getregistry();",
+          "type": "Method",
+          "description": "Gets the Lua registry table",
+          "insert": "debug.getregistry"
       }
   },
   "drawing_library": {
@@ -431,50 +754,227 @@
           "type": "Method",
           "description": "Creates a new drawing object with type. Returns the object.",
           "insert": "Drawing.new"
-      } 
+      },
+      "Drawing.Fonts": {
+          "label": "Drawing.Fonts",
+          "type": "Property",
+          "description": "Available drawing fonts",
+          "insert": "Drawing.Fonts"
+      }
   },
-  "globals_library": {
-    "globals.get_player_by_name": {
-        "label": "globals.get_player_by_name(username);",
-        "type": "Method",
-        "description": "Gets a player by their display name or username.",
-        "insert": "globals.get_player_by_name"
-    },
-    "globals.remote_spy": {
-        "label": "globals.remote_spy();",
-        "type": "Method",
-        "description": "Runs a remote spy supported by globals.",
-        "insert": "globals.remote_spy"
-    },
-    "globals.teleport": {
-        "label": "globals.teleport(vector3);",
-        "type": "Method",
-        "description": "Teleports the local player to a position",
-        "insert": "globals.teleport"
-    },
-    "globals.is_player_alive": {
-        "label": "globals.is_player_alive(username);",
-        "type": "Method",
-        "description": "Checks if a player is alive.",
-        "insert": "globals.is_player_alive"
-    },
-    "globals.teleport_to_player": {
-        "label": "globals.teleport_to_player(username);",
-        "type": "Method",
-        "description": "Teleports the local player to the position of the target player.",
-        "insert": "globals.teleport_to_player"
-    },
-    "globals.get_distance": {
-        "label": "globals.get_distance(username);",
-        "type": "Method",
-        "description": "Calculates the distance between two players.",
-        "insert": "globals.get_distance"
-    },
-    "globals.dex": {
-        "label": "globals.dex();",
-        "type": "Method",
-        "description": "Runs dex (Ultimate Debugging Suite)",
-        "insert": "globals.dex"
-    }
-}
-}
+  "websocket_library": {
+      "WebSocket.connect": {
+          "label": "WebSocket.connect(url);",
+          "type": "Method",
+          "description": "Connects to a WebSocket",
+          "insert": "WebSocket.connect"
+      }
+  },
+  "crypt_library": {
+      "crypt.encrypt": {
+          "label": "crypt.encrypt(data, key);",
+          "type": "Method",
+          "description": "Encrypts data",
+          "insert": "crypt.encrypt"
+      },
+      "crypt.decrypt": {
+          "label": "crypt.decrypt(data, key);",
+          "type": "Method",
+          "description": "Decrypts data",
+          "insert": "crypt.decrypt"
+      },
+      "crypt.base64encode": {
+          "label": "crypt.base64encode(data);",
+          "type": "Method",
+          "description": "Encodes to base64",
+          "insert": "crypt.base64encode"
+      },
+      "crypt.base64decode": {
+          "label": "crypt.base64decode(data);",
+          "type": "Method",
+          "description": "Decodes from base64",
+          "insert": "crypt.base64decode"
+      },
+      "crypt.generatekey": {
+          "label": "crypt.generatekey();",
+          "type": "Method",
+          "description": "Generates encryption key",
+          "insert": "crypt.generatekey"
+      },
+      "crypt.generatebytes": {
+          "label": "crypt.generatebytes(size);",
+          "type": "Method",
+          "description": "Generates random bytes",
+          "insert": "crypt.generatebytes"
+      },
+      "crypt.hash": {
+          "label": "crypt.hash(data);",
+          "type": "Method",
+          "description": "Hashes data",
+          "insert": "crypt.hash"
+      }
+  },
+  "http_library": {
+      "syn.request": {
+          "label": "syn.request(options);",
+          "type": "Method",
+          "description": "Synapse HTTP request",
+          "insert": "syn.request"
+      },
+      "http.request": {
+          "label": "http.request(options);",
+          "type": "Method",
+          "description": "HTTP request",
+          "insert": "http.request"
+      }
+  },
+  "cache_library": {
+      "cache.invalidate": {
+          "label": "cache.invalidate(instance);",
+          "type": "Method",
+          "description": "Invalidates cache for an instance",
+          "insert": "cache.invalidate"
+      },
+      "cache.iscached": {
+          "label": "cache.iscached(instance);",
+          "type": "Method",
+          "description": "Checks if instance is cached",
+          "insert": "cache.iscached"
+      },
+      "cache.replace": {
+          "label": "cache.replace(instance, replacement);",
+          "type": "Method",
+          "description": "Replaces cached instance",
+          "insert": "cache.replace"
+      }
+  },
+  "bit32_library": {
+      "bit32.arshift": {
+          "label": "bit32.arshift(x, disp);",
+          "type": "Method",
+          "description": "Arithmetic right shift",
+          "insert": "bit32.arshift"
+      },
+      "bit32.band": {
+          "label": "bit32.band(...);",
+          "type": "Method",
+          "description": "Bitwise AND",
+          "insert": "bit32.band"
+      },
+      "bit32.bnot": {
+          "label": "bit32.bnot(x);",
+          "type": "Method",
+          "description": "Bitwise NOT",
+          "insert": "bit32.bnot"
+      },
+      "bit32.bor": {
+          "label": "bit32.bor(...);",
+          "type": "Method",
+          "description": "Bitwise OR",
+          "insert": "bit32.bor"
+      },
+      "bit32.btest": {
+          "label": "bit32.btest(...);",
+          "type": "Method",
+          "description": "Bitwise test",
+          "insert": "bit32.btest"
+      },
+      "bit32.bxor": {
+          "label": "bit32.bxor(...);",
+          "type": "Method",
+          "description": "Bitwise XOR",
+          "insert": "bit32.bxor"
+      },
+      "bit32.extract": {
+          "label": "bit32.extract(n, field, width);",
+          "type": "Method",
+          "description": "Extracts bits",
+          "insert": "bit32.extract"
+      },
+      "bit32.lrotate": {
+          "label": "bit32.lrotate(x, disp);",
+          "type": "Method",
+          "description": "Left rotate",
+          "insert": "bit32.lrotate"
+      },
+      "bit32.lshift": {
+          "label": "bit32.lshift(x, disp);",
+          "type": "Method",
+          "description": "Left shift",
+          "insert": "bit32.lshift"
+      },
+      "bit32.replace": {
+          "label": "bit32.replace(n, v, field, width);",
+          "type": "Method",
+          "description": "Replaces bits",
+          "insert": "bit32.replace"
+      },
+      "bit32.rrotate": {
+          "label": "bit32.rrotate(x, disp);",
+          "type": "Method",
+          "description": "Right rotate",
+          "insert": "bit32.rrotate"
+      },
+      "bit32.rshift": {
+          "label": "bit32.rshift(x, disp);",
+          "type": "Method",
+          "description": "Right shift",
+          "insert": "bit32.rshift"
+      },
+      "bit32.countlz": {
+          "label": "bit32.countlz(n);",
+          "type": "Method",
+          "description": "Count leading zeros",
+          "insert": "bit32.countlz"
+      },
+      "bit32.countrz": {
+          "label": "bit32.countrz(n);",
+          "type": "Method",
+          "description": "Count trailing zeros",
+          "insert": "bit32.countrz"
+      }
+  },
+  "table_extensions": {
+      "table.clear": {
+          "label": "table.clear(t);",
+          "type": "Method",
+          "description": "Clears all table entries",
+          "insert": "table.clear"
+      },
+      "table.create": {
+          "label": "table.create(count, value);",
+          "type": "Method",
+          "description": "Creates a table with size",
+          "insert": "table.create"
+      },
+      "table.find": {
+          "label": "table.find(t, value);",
+          "type": "Method",
+          "description": "Finds value in table",
+          "insert": "table.find"
+      },
+      "table.pack": {
+          "label": "table.pack(...);",
+          "type": "Method",
+          "description": "Packs values into table",
+          "insert": "table.pack"
+      },
+      "table.unpack": {
+          "label": "table.unpack(t, i, j);",
+          "type": "Method",
+          "description": "Unpacks table values",
+          "insert": "table.unpack"
+      },
+      "table.move": {
+          "label": "table.move(a1, f, e, t, a2);",
+          "type": "Method",
+          "description": "Moves table elements",
+          "insert": "table.move"
+      },
+      "table.clone": {
+          "label": "table.clone(t);",
+          "type": "Method",
+          "description": "Creates shallow copy of table",
+          "insert": "table.clone"
+      }
+  }
